@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import {createLogger} from 'redux-logger';
-import thunk from 'redux-thunk'
+import thunk from 'redux-thunk';
 import reducer from './Reducer.js';
 import { BrowserRouter as Router } from "react-router-dom";
 import HomeScreen from './screens/HomeScreen.js';
