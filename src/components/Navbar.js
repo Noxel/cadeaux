@@ -43,6 +43,7 @@ class Navbar extends Component{
                     <MenuIcon />
                 </IconButton>
                 <SwipeableDrawer
+                classes={{paper: classes.swipe}}
                 open={this.state.left}
                 onClose={this.toggleDrawer('left', false)}
                 onOpen={this.toggleDrawer('left', true)}
@@ -57,11 +58,11 @@ class Navbar extends Component{
                         <ChevronLeftIcon />
                     </IconButton>
                     <Divider />
-                    <List color="primary">
+                    <List >
                     {listItems.map((text, index) => (
                         <Link className={classes.link} to={linkItems[index]}>
                             <ListItem button key={text}>
-                                <ListItemIcon>
+                                <ListItemIcon classes={{root: classes.list}}>
                                     {index === 0  ? <HomeIcon /> : <></>}
                                     {index === 1  ? <ProfileIcon /> : <></>}
                                     {index === 2  ? <CalendarIcon /> : <></>}
@@ -69,7 +70,7 @@ class Navbar extends Component{
                                     {index === 4  ? <ContactsIcon /> : <></>}
                                     {index === 5  ? <UndoIcon /> : <></>}
                                 </ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText classes={{primary: classes.list}} primary={text} />
                             </ListItem>
                         </Link>
                     ))}
@@ -91,9 +92,16 @@ const styles = {
     iconChevron: {
         display: 'flex',
         alignItems: 'center',
+        color: 'white'
     },
     link: {
         textDecoration: 'none'
+    },
+    swipe: {
+        backgroundColor: '#f44336'
+    },
+    list: {
+        color: 'white'
     }
 };
 

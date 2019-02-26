@@ -6,6 +6,8 @@ import thunk from 'redux-thunk';
 import reducer from './Reducer.js';
 import { BrowserRouter as Router } from "react-router-dom";
 import HomeScreen from './screens/HomeScreen.js';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
 
 const middleware = [thunk];
 if (process.env.NODE_ENV !== 'production'){
@@ -14,13 +16,30 @@ if (process.env.NODE_ENV !== 'production'){
 
 const store = createStore(reducer, applyMiddleware(...middleware));
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#f6685e',
+      main: '#f44336',
+      dark: '#aa2e25',
+    },
+    secondary: {
+      light: '#68b36b',
+      main: '#43a047',
+      dark: '#2e7031',
+    }
+  }
+})
+
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router>  
-          <HomeScreen />
-        </Router>
+        <MuiThemeProvider theme={theme}>
+          <Router>  
+            <HomeScreen />
+          </Router>
+        </MuiThemeProvider>
       </Provider>
     );
   }
