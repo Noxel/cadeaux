@@ -1,12 +1,19 @@
-const initialState = {
+import {LOGIN} from "./Actions";
 
-}
+const initialState = {
+    token: "",
+};
 
 const reducer = (state = initialState, action) => {
-    switch(action.type){
+    switch (action.type) {
+        case LOGIN:
+            return {
+                ...state,
+                token: action.token
+            };
         default:
+            return state
     }
-    return state
-}
+};
 
 export default reducer;
