@@ -70,7 +70,7 @@ class Navbar extends Component{
                                     {index === 4  ? <ContactsIcon /> : <></>}
                                     {index === 5  ? <UndoIcon /> : <></>}
                                 </ListItemIcon>
-                            <ListItemText classes={{primary: classes.list}} primary={text} />
+                                <ListItemText classes={{primary: classes.list}} primary={text} />
                             </ListItem>
                         </Link>
                     ))}
@@ -92,7 +92,7 @@ const styles = {
     iconChevron: {
         display: 'flex',
         alignItems: 'center',
-        color: 'white'
+        color: 'white',
     },
     link: {
         textDecoration: 'none'
