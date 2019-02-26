@@ -4,17 +4,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import '../assets/css/FormLogin.css';
 import {connect} from "react-redux";
-import {requestLogin} from "../Actions";
+import {requestLogin, requestLogout} from "../Actions";
+import {Link} from "react-router-dom";
 
 class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            password: '',
-        }
-    }
-
     render() {
         return (
             <>
@@ -23,6 +16,8 @@ class Login extends Component {
                         <Typography variant="h6" color="inherit">
                             Cadeaux
                         </Typography>
+                        {this.props.user === null ? <Link to="/login">Connexion</Link> :
+                            <span onClick={() => {this.props.dispatch(requestLogout())}}>Se déconnecter</span>}
                     </Toolbar>
                 </AppBar>
 
@@ -30,10 +25,12 @@ class Login extends Component {
                     e.preventDefault();
                     this.props.dispatch(requestLogin(e.target.elements[0].value, e.target.elements[1].value));
                 }}>
+                    <h1>Connexion</h1>
+
                     {this.props.error}
 
-                    <input type="text" placeholder="Nom d'utilisateur" name="username" />
-                    <input type="password" placeholder="Mot de passe" name="password" />
+                    <input type="text" placeholder="Nom d'utilisateur" name="username"/>
+                    <input type="password" placeholder="Mot de passe" name="password"/>
 
                     <button type="submit">Se connecter</button>
                 </form>
@@ -45,6 +42,7 @@ class Login extends Component {
 const mapStateToProps = (state) => {
     return {
         error: state.error,
+        user: state.user,
     }
 };
 
