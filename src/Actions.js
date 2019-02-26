@@ -80,4 +80,3 @@ function decodeJWT(raw) {
         signature: parts[2],
     };
 }
-
