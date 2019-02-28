@@ -11,9 +11,15 @@ import ContactsScreen from './ContactsScreen';
 import Home from '../components/Home';
 import Registration from "../forms/Registration";
 import Login from "../forms/Login";
+import {connect} from "react-redux";
 
 class HomeScreen extends Component{
     render(){
+        console.log(this.props.user);
+        if(this.props.user === null)
+            return (
+                <Login/>
+            );
         return(
             <>
                 <AppBar position="static" color="primary">
@@ -31,12 +37,15 @@ class HomeScreen extends Component{
                 <Route exact path="/contacts" render={() => <ContactsScreen/>}/>
                 <Route exact path="/login" render={() => <Login/>}/>
                 <Route exact path="/registration" render={() => <Registration/>}/>
-
             </>
         );
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+    }
+};
 
-
-export default HomeScreen;
+export default connect(mapStateToProps)(HomeScreen);
