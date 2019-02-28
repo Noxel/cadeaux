@@ -16,17 +16,17 @@ class Navbar extends Component{
         left: false,
         open: false,
       };
-    
+
     toggleDrawer = (side, open) => () => {
         this.setState({
           [side]: open,
         });
     };
-    
+
     handleDrawerOpen = () => {
         this.setState({ open: true });
     };
-    
+
     handleDrawerClose = () => {
         this.setState({ open: false });
     };
@@ -55,7 +55,7 @@ class Navbar extends Component{
     render(){
         const { classes } = this.props;
         const listItems = ['Accueil', 'Mon profil', 'Calendrier', 'Cadeaux', 'Contacts', 'Déconnexion'];
-        const linkItems = ['/', '/profile', '/calendar', '/presents', '/contacts', '/'];
+        const linkItems = ['/', '/profile', '/calendar', '/presents', '/contacts', '/login'];
         return(
             <>
                 <IconButton className={classes.menuButton} onClick={this.toggleDrawer('left', true)} aria-label="menu">

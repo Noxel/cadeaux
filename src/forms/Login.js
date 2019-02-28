@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 import '../assets/css/FormLogin.css';
 import {connect} from "react-redux";
-import {requestLogin} from "../Actions";
+import {requestLogin, requestLogout} from "../Actions";
 import {Link} from "react-router-dom";
 
 class Login extends Component {
+    componentDidMount() {
+        this.props.dispatch(requestLogout());
+    }
+
     render() {
         return (
             <>

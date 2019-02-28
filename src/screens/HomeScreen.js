@@ -15,7 +15,6 @@ import {connect} from "react-redux";
 
 class HomeScreen extends Component{
     render(){
-        console.log(this.props.user);
         if(this.props.user === null)
             return (
                 <Login/>
