@@ -9,6 +9,8 @@ import CalendarScreen from './CalendarScreen';
 import PresentsScreen from './PresentsScreen';
 import ContactsScreen from './ContactsScreen';
 import Home from '../components/Home';
+import Registration from "../forms/Registration";
+import Login from "../forms/Login";
 
 class HomeScreen extends Component{
     render(){
@@ -27,6 +29,9 @@ class HomeScreen extends Component{
                 <Route exact path="/calendar" render={() => <CalendarScreen/>}/>
                 <Route exact path="/presents" render={() => <PresentsScreen/>}/>
                 <Route exact path="/contacts" render={() => <ContactsScreen/>}/>
+                <Route exact path="/login" render={() => <Login/>}/>
+                <Route exact path="/registration" render={() => <Registration/>}/>
+
             </>
         );
     }
