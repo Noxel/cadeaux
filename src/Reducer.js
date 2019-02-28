@@ -1,4 +1,4 @@
-import {ERROR, LOGIN_SUCCESS, LOGOUT_SUCCESS, OPEN_DIALOG} from "./Actions";
+import {ERROR, LOGIN_SUCCESS, LOGOUT_SUCCESS, OPEN_DIALOG, SIGNUP_SUCCESS} from "./Actions";
 
 const initialState = {
     token: null,
