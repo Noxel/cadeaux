@@ -4,32 +4,25 @@ import {connect} from "react-redux";
 import CalendarDialog from '../components/CalendarDialog';
 import { openDialog } from '../Actions';
 import { withStyles } from '@material-ui/core';
+import gift from '../assets/img/gift.png';
+import FabButton from '../components/FabButton'
 
 class CalendarScreen extends Component{
     state = {
         currentDay: new Date(),
         date: new Date(),
-        nextDay: new Date().getDate()+1, /// nop ça marche pas ça sinon tu arrive a des jour du type 33 :p
-        neDay: new Date().getDate()+5, /// si tu veut faire le jour d'apres faut utiliser les time stamp ^^
-        nextMonth: new Date().getMonth()+1,
-        event: [new Date(2019, 2, 2), new Date(2019, 2, 7), new Date(2019, 2, 8) ] // :D
-
+        event: [new Date(2019, 2, 2), new Date(2019, 2, 7), new Date(2019, 2, 20) ] // :D
     }
     
     onChange = date => this.setState({ date })
 
     doIHaveEventOnThisDate(day){
-        console.log(day.date.getDate())
-        //const tab = [this.state.nextDay, this.state.neDay, this.state.currentDay] ************** nop :p
-        //const res = tab.find((date, index) => date === day.date.getDate()) !== undefined   **************  a chaque date on check si un event correspond du coup map et non find
-        //console.log(res)
         const tab = this.state.event
         let res = false;
         tab.map(value =>{
-            console.log("value " + value);
             return value.getUTCDate() === day.date.getUTCDate() && value.getUTCMonth() === day.date.getUTCMonth() && value.getUTCFullYear() === day.date.getUTCFullYear() ? res = true : null
         })
-        return res
+        return res;
     }
     
     render(){
@@ -37,15 +30,17 @@ class CalendarScreen extends Component{
         return(
             <>
                 <Calendar
+                    className={classes.calendar}
                     onChange={this.onChange}
                     value={this.state.date}
                     minDate={this.state.currentDay}
                     onClickDay={(value) => {this.props.dispatch(openDialog(true))}}
                     tileClassName={(date) =>
-                         this.doIHaveEventOnThisDate(date) ? classes.tiles : null
+                         this.doIHaveEventOnThisDate(date) ? classes.eventTiles : classes.tiles
                     }
                 />
                 {this.props.openDialog ? <CalendarDialog/>: <></>}
+                <FabButton fonct={openDialog}/>
             </>
         );
     }
@@ -56,8 +51,23 @@ const mapStateToProps = state => {
 }
 
 const styles = {
+    calendar: {
+        margin: "auto",
+        width: "100%"
+    },
+    eventTiles: {
+        backgroundImage: "url("+gift+")",
+        backgroundSize: "contain",
+        backgroundRepeat: "no-repeat",
+        fontWeight: "bold",
+        color: '#2e7031',
+        backgroundPosition: "center center",
+        padding: "2%",
+        margin: "auto"
+    },
     tiles: {
-        backgroundColor: "red"
+        padding: "2%",
+        margin: "auto"
     }
 }
 

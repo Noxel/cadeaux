@@ -9,7 +9,6 @@ import StarIcon from '@material-ui/icons/Stars';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import UndoIcon from '@material-ui/icons/Undo';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 class Navbar extends Component{
 
@@ -74,9 +73,16 @@ class Navbar extends Component{
                     onClick={this.toggleDrawer('left', false)}
                     onKeyDown={this.toggleDrawer('left', false)}
                 >
-                    <IconButton className={classes.iconChevron} onClick={this.handleDrawerClose}>
-                        <ChevronLeftIcon />
-                    </IconButton>
+                    <List>
+                        <ListItem button>
+                            <ListItemIcon classes={{root: classes.iconChevron}} onClick={this.handleDrawerClose} aria-label="menu">
+                                <MenuIcon />
+                            </ListItemIcon>
+                            <ListItemText classes={{primary: classes.list}}>
+                                    App Cadeaux
+                            </ListItemText>
+                        </ListItem>
+                    </List>
                     <Divider />
                     <List >
                     {listItems.map((text, index) => (
