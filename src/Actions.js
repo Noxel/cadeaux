@@ -3,6 +3,8 @@ export const CONNECTING_SUCCESS = 'CONNECTING_SUCCESS';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const ERROR = 'ERROR';
+export const OPEN_DIALOG = "OPEN_DIALOG";
+export const OPEN_DIALOG_ERROR = "OPEN_DIALOG_ERROR";
 
 export const requestLogin = (login, password) => async dispatch => {
     try {
@@ -80,3 +82,12 @@ function decodeJWT(raw) {
         signature: parts[2],
     };
 }
+
+export const openDialog = reverse => async dispatch => {
+    try {
+        dispatch({type: OPEN_DIALOG, payload: reverse})
+    }
+    catch (e) {
+        console.log(e)
+    }
+};
