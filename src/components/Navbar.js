@@ -60,15 +60,20 @@ class Navbar extends Component{
                     <Divider />
                     <List >
                     {listItems.map((text, index) => (
-                        <Link className={classes.link} to={linkItems[index]}>
+                        <Link key={index} className={classes.link} to={linkItems[index]}>
                             <ListItem button key={text}>
                                 <ListItemIcon classes={{root: classes.list}}>
-                                    {index === 0  ? <HomeIcon /> : <></>}
-                                    {index === 1  ? <ProfileIcon /> : <></>}
-                                    {index === 2  ? <CalendarIcon /> : <></>}
-                                    {index === 3  ? <StarIcon /> : <></>}
-                                    {index === 4  ? <ContactsIcon /> : <></>}
-                                    {index === 5  ? <UndoIcon /> : <></>}
+                                    {(index) => {
+                                        switch (index) {
+                                            case 0 : return <HomeIcon />;
+                                            case 1 : return <ProfileIcon />;
+                                            case 2 : return <CalendarIcon />;
+                                            case 3 : return <StarIcon />;
+                                            case 4 : return <ContactsIcon />;
+                                            case 5 : return <UndoIcon />;
+                                            default: break;
+                                        }
+                                    }}
                                 </ListItemIcon>
                                 <ListItemText classes={{primary: classes.list}} primary={text} />
                             </ListItem>

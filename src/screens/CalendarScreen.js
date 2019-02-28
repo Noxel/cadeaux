@@ -9,18 +9,27 @@ class CalendarScreen extends Component{
     state = {
         currentDay: new Date(),
         date: new Date(),
-        nextDay: new Date().getDate()+1,
-        neDay: new Date().getDate()+5,
-        nextMonth: new Date().getMonth()+1
+        nextDay: new Date().getDate()+1, /// nop ça marche pas ça sinon tu arrive a des jour du type 33 :p
+        neDay: new Date().getDate()+5, /// si tu veut faire le jour d'apres faut utiliser les time stamp ^^
+        nextMonth: new Date().getMonth()+1,
+        event: [new Date(2019, 2, 2), new Date(2019, 2, 7), new Date(2019, 2, 8) ] // :D
+
     }
     
     onChange = date => this.setState({ date })
 
     doIHaveEventOnThisDate(day){
-        console.log(day)
-        const tab = [this.state.nextDay, this.state.neDay, this.state.currentDay]
-        const res = tab.find((date, index) => date === day.date.getDate()) !== undefined
-        console.log(res)
+        console.log(day.date.getDate())
+        //const tab = [this.state.nextDay, this.state.neDay, this.state.currentDay] ************** nop :p
+        //const res = tab.find((date, index) => date === day.date.getDate()) !== undefined   **************  a chaque date on check si un event correspond du coup map et non find
+        //console.log(res)
+        const tab = this.state.event
+        let res = false;
+        tab.map(value =>{
+            console.log("value " + value);
+            return value.getUTCDate() === day.date.getUTCDate() && value.getUTCMonth() === day.date.getUTCMonth() && value.getUTCFullYear() === day.date.getUTCFullYear() ? res = true : null
+        })
+        return res
     }
     
     render(){
@@ -32,8 +41,8 @@ class CalendarScreen extends Component{
                     value={this.state.date}
                     minDate={this.state.currentDay}
                     onClickDay={(value) => {this.props.dispatch(openDialog(true))}}
-                    tileClassName={(date, view) => 
-                        this.doIHaveEventOnThisDate(date) ? classes.tiles : null
+                    tileClassName={(date) =>
+                         this.doIHaveEventOnThisDate(date) ? classes.tiles : null
                     }
                 />
                 {this.props.openDialog ? <CalendarDialog/>: <></>}

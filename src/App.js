@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
 import reducer from './Reducer.js';
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 import HomeScreen from './screens/HomeScreen.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -17,6 +17,9 @@ if (process.env.NODE_ENV !== 'production'){
 const store = createStore(reducer, applyMiddleware(...middleware));
 
 const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+  },
   palette: {
     primary: {
       light: '#f6685e',
