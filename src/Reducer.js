@@ -23,8 +23,14 @@ const reducer = (state = initialState, action) => {
         case LOGOUT_SUCCESS:
             return {
                 ...state,
-                user: null,
                 token: null,
+                user: null,
+            };
+        case SIGNUP_SUCCESS:
+            return {
+                ...state,
+                token: action.token,
+                user: action.user
             };
         case OPEN_DIALOG:
             return {

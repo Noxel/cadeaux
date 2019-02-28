@@ -13,13 +13,12 @@ export const requestLogin = (login, password) => async dispatch => {
             {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({query: 'mutation { login( username: "' + login + '", password:"' + password + '"){ token user { id, username, contacts { id, name, surname }}}}'})
+                body: JSON.stringify({query: 'mutation { login( username: "' + login + '", password:"' + password + '"){ token user { id, username}}}'})
             }
         );
         const json = await res.json();
         const token = decodeJWT(json.data.login.token);
         const user = json.data.login.user;
-        console.log(json.data);
 
         dispatch({
             type: LOGIN_SUCCESS,
@@ -31,37 +30,24 @@ export const requestLogin = (login, password) => async dispatch => {
     }
 };
 
-export const requestUser = (id, rawToken) => async dispatch => {
-    try {
-        const res = await fetch('/api/users/' + id, {
-            headers: {
-                'Authorization': 'Bearer ' + rawToken,
-            }
-        });
-        const payload = await res.json();
-
-        dispatch({type: CONNECTING_SUCCESS, payload});
-    } catch (e) {
-        dispatch({type: ERROR, e});
-    }
-};
-
-export const requestSignup = (login, password) => async dispatch => {
+export const requestSignup = (login, password, name, surname, mail) => async dispatch => {
     try {
         const res = await fetch(
             'https://www.nokxs.com/api/',
             {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({query: 'mutation { signup( username: "' + login + '", password:"' + password + '"){ token }}'})
+                body: JSON.stringify({query: 'mutation { signup( username: "' + login + '", password:"' + password + '", name:"' + name + '", surname:"' + surname + '", mail:"' + mail + '"){ token, user {id, username} } }'})
             }
         );
         const json = await res.json();
         const token = decodeJWT(json.data.signup.token);
+        const user = json.data.signup.user;
 
         dispatch({
             type: SIGNUP_SUCCESS,
-            token: token
+            token: token,
+            user: user
         });
     } catch (e) {
 
