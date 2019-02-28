@@ -32,6 +32,26 @@ class Navbar extends Component{
         this.setState({ open: false });
     };
 
+    icon = (index) => {
+        switch (index) {
+            case 0 :
+                return <HomeIcon/>;
+            case 1 :
+                return <ProfileIcon/>;
+            case 2 :
+                return <CalendarIcon/>;
+            case 3 :
+                return <StarIcon/>;
+            case 4 :
+                return <ContactsIcon/>;
+            case 5 :
+                return <UndoIcon/>;
+            default:
+                break;
+        }
+    }
+
+
 
     render(){
         const { classes } = this.props;
@@ -63,17 +83,7 @@ class Navbar extends Component{
                         <Link key={index} className={classes.link} to={linkItems[index]}>
                             <ListItem button key={text}>
                                 <ListItemIcon classes={{root: classes.list}}>
-                                    {(index) => {
-                                        switch (index) {
-                                            case 0 : return <HomeIcon />;
-                                            case 1 : return <ProfileIcon />;
-                                            case 2 : return <CalendarIcon />;
-                                            case 3 : return <StarIcon />;
-                                            case 4 : return <ContactsIcon />;
-                                            case 5 : return <UndoIcon />;
-                                            default: break;
-                                        }
-                                    }}
+                                    {this.icon(index)}
                                 </ListItemIcon>
                                 <ListItemText classes={{primary: classes.list}} primary={text} />
                             </ListItem>
