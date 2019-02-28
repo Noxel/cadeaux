@@ -17,7 +17,10 @@ class HomeScreen extends Component{
     render(){
         if(this.props.user === null)
             return (
-                <Login/>
+                <>
+                    <Route exact path="/" render={() => <Login/>}/>
+                    <Route exact path="/registration" render={() => <Registration/>}/>
+                </>
             );
         return(
             <>
@@ -34,8 +37,6 @@ class HomeScreen extends Component{
                 <Route exact path="/calendar" render={() => <CalendarScreen/>}/>
                 <Route exact path="/presents" render={() => <PresentsScreen/>}/>
                 <Route exact path="/contacts" render={() => <ContactsScreen/>}/>
-                <Route exact path="/login" render={() => <Login/>}/>
-                <Route exact path="/registration" render={() => <Registration/>}/>
             </>
         );
     }

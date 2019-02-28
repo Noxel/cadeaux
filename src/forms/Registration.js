@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import '../assets/css/FormLogin.css';
 import {requestSignup} from "../Actions";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Login from "../screens/HomeScreen";
 
 class Registration extends Component {
     constructor(props) {
@@ -66,7 +67,7 @@ class Registration extends Component {
 
                     <button type="submit">S'inscrire</button>
 
-                    <Link to="/login">Déjà inscrit ? Connectez-vous</Link>
+                    <Link to="/">Déjà inscrit ? Connectez-vous</Link>
                 </form>
             </>
         );
