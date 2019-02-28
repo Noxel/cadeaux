@@ -1,9 +1,10 @@
-import {ERROR, LOGIN_SUCCESS, LOGOUT_SUCCESS} from "./Actions";
+import {ERROR, LOGIN_SUCCESS, LOGOUT_SUCCESS, OPEN_DIALOG} from "./Actions";
 
 const initialState = {
     token: null,
     user: null,
     error: '',
+    openDialog: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -25,9 +26,14 @@ const reducer = (state = initialState, action) => {
                 user: null,
                 token: null,
             };
+        case OPEN_DIALOG:
+            return {
+                ...state,
+                openDialog: action.payload
+            }
         default:
             return state
     }
 };
 
-export default reducer;
+export default reducer;
