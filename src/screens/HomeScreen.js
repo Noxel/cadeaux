@@ -12,6 +12,7 @@ import Home from '../components/Home';
 import Registration from "../forms/Registration";
 import Login from "../forms/Login";
 import {connect} from "react-redux";
+import ResetPassword from "../forms/ResetPassword";
 
 class HomeScreen extends Component{
     componentDidMount(){
@@ -34,12 +35,13 @@ class HomeScreen extends Component{
                 <Route exact path="/login" render={() => this.props.token === null ? <Login/> : <Redirect to="/home"/>}/>
                 <Route exact path="/logout" render={() => <Redirect to="/"/>}/>
                 <Route exact path="/registration" render={() => this.props.token === null ? <Registration/> : <Redirect to="/home"/>}/>
+                <Route exact path="/resetPassword" render={() => <ResetPassword/>}/>
                 <Route exact path="/profile" render={() => <ProfileScreen/>}/>
                 <Route exact path="/calendar" render={() => <CalendarScreen/>}/>
                 <Route exact path="/presents" render={() => <PresentsScreen/>}/>
                 <Route exact path="/contacts" render={() => <ContactsScreen/>}/>
-                <Route exact path="/" render={() => 
-                    this.props.token !== null ? <Redirect to="/home"/> : <Redirect to="/login"/>    
+                <Route exact path="/" render={() =>
+                    this.props.token !== null ? <Redirect to="/home"/> : <Redirect to="/login"/>
                 }/>
             </>
         );

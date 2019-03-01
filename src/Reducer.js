@@ -1,9 +1,10 @@
-import {ERROR, LOGIN_SUCCESS, LOGOUT_SUCCESS, OPEN_DIALOG, SIGNUP_SUCCESS} from "./Actions";
+import {ERROR, LOGIN_SUCCESS, LOGOUT_SUCCESS, OPEN_DIALOG, RESET_PASSWORD, SIGNUP_SUCCESS} from "./Actions";
 
 const initialState = {
     token: null,
-    user: null,
+    username: '',
     error: '',
+    message: '',
     openDialog: false,
 };
 
@@ -13,7 +14,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: action.token,
-                user: action.user,
+                username: action.username,
             };
         case ERROR:
             return {
@@ -24,19 +25,24 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: null,
-                user: null,
+                username: '',
             };
         case SIGNUP_SUCCESS:
             return {
                 ...state,
                 token: action.token,
-                user: action.user
+                username: action.username
+            };
+        case RESET_PASSWORD:
+            return {
+                ...state,
+                message: 'Un nouveau mot de passe a été envoyé à votre adresse mail'
             };
         case OPEN_DIALOG:
             return {
                 ...state,
                 openDialog: action.payload
-            }
+            };
         default:
             return state
     }
