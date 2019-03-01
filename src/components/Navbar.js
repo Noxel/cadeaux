@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
 import { SwipeableDrawer, List, ListItem, ListItemIcon, ListItemText, Divider, IconButton } from '@material-ui/core';
@@ -9,6 +10,7 @@ import StarIcon from '@material-ui/icons/Stars';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import UndoIcon from '@material-ui/icons/Undo';
+import { requestLogout } from '../Actions';
 
 class Navbar extends Component{
 
@@ -51,11 +53,12 @@ class Navbar extends Component{
     }
 
 
-
+    //Garder le lastItem avec Déconnexion en correspondance, toujours rajouter des items avant la déconnexion !
     render(){
         const { classes } = this.props;
         const listItems = ['Accueil', 'Mon profil', 'Calendrier', 'Cadeaux', 'Contacts', 'Déconnexion'];
-        const linkItems = ['/', '/profile', '/calendar', '/presents', '/contacts', '/login'];
+        const lastItem = listItems.length;
+        const linkItems = ['/home', '/profile', '/calendar', '/presents', '/contacts', '/logout'];
         return(
             <>
                 <IconButton className={classes.menuButton} onClick={this.toggleDrawer('left', true)} aria-label="menu">
@@ -74,25 +77,36 @@ class Navbar extends Component{
                     onKeyDown={this.toggleDrawer('left', false)}
                 >
                     <List>
-                        <ListItem button>
-                            <ListItemIcon classes={{root: classes.iconChevron}} onClick={this.handleDrawerClose} aria-label="menu">
-                                <MenuIcon />
-                            </ListItemIcon>
-                            <ListItemText classes={{primary: classes.list}}>
-                                    App Cadeaux
-                            </ListItemText>
-                        </ListItem>
+                        <Link to="/home" className={classes.link}>
+                            <ListItem button>
+                                <ListItemIcon classes={{root: classes.iconChevron}} onClick={this.handleDrawerClose} aria-label="menu">
+                                    <MenuIcon />
+                                </ListItemIcon>
+                                <ListItemText classes={{primary: classes.list}}>
+                                        App Cadeaux
+                                </ListItemText>
+                            </ListItem>
+                        </Link>
                     </List>
                     <Divider />
                     <List >
                     {listItems.map((text, index) => (
                         <Link key={index} className={classes.link} to={linkItems[index]}>
-                            <ListItem button key={text}>
-                                <ListItemIcon classes={{root: classes.list}}>
-                                    {this.icon(index)}
-                                </ListItemIcon>
-                                <ListItemText classes={{primary: classes.list}} primary={text} />
-                            </ListItem>
+                            {lastItem === index + 1 ?
+                                <ListItem button key={text} onClick={() => this.props.dispatch(requestLogout())}>
+                                    <ListItemIcon classes={{root: classes.list}}>
+                                        {this.icon(index)}
+                                    </ListItemIcon>
+                                    <ListItemText classes={{primary: classes.list}} primary={text} />
+                                </ListItem>
+                            : 
+                                <ListItem button key={text}>
+                                    <ListItemIcon classes={{root: classes.list}}>
+                                        {this.icon(index)}
+                                    </ListItemIcon>
+                                    <ListItemText classes={{primary: classes.list}} primary={text} />
+                                </ListItem>
+                            }
                         </Link>
                     ))}
                     </List>
@@ -126,4 +140,4 @@ const styles = {
     }
 };
 
-export default withStyles(styles, { withTheme: true })(Navbar);
+export default withStyles(styles, { withTheme: true })(connect()(Navbar));

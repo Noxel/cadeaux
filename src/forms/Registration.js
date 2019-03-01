@@ -2,11 +2,7 @@ import React, {Component} from 'react';
 import '../assets/css/FormLogin.css';
 import {requestSignup} from "../Actions";
 import {connect} from "react-redux";
-import {Link, Route} from "react-router-dom";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Login from "../screens/HomeScreen";
+import {Link} from "react-router-dom";
 
 class Registration extends Component {
     constructor(props) {
@@ -31,14 +27,6 @@ class Registration extends Component {
     render() {
         return (
             <>
-                <AppBar position="static" color="primary">
-                    <Toolbar>
-                        <Typography variant="h6" color="inherit">
-                            App Cadeaux
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-
                 <form className="formLogin"
                       onSubmit={(e) => {
                           e.preventDefault();

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
 import reducer from './Reducer.js';
-import {BrowserRouter as Router} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import HomeScreen from './screens/HomeScreen.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -39,9 +39,9 @@ class App extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider theme={theme}>
-          <Router>  
+          <BrowserRouter>  
             <HomeScreen />
-          </Router>
+          </BrowserRouter>
         </MuiThemeProvider>
       </Provider>
     );
