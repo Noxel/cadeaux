@@ -1,8 +1,9 @@
-import {ERROR, LOGIN_SUCCESS, LOGOUT_SUCCESS, OPEN_DIALOG, RESET_PASSWORD, SIGNUP_SUCCESS} from "./Actions";
+import {ERROR, LOAD_USER, LOGIN_SUCCESS, LOGOUT_SUCCESS, OPEN_DIALOG, RESET_PASSWORD, SIGNUP_SUCCESS} from "./Actions";
 
 const initialState = {
     token: null,
     username: '',
+    user: {},
     error: '',
     message: '',
     openDialog: false,
@@ -43,6 +44,8 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 openDialog: action.payload
             };
+        case LOAD_USER:
+            return {...state, username: action.username, user: action.user };
         default:
             return state
     }

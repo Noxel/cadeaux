@@ -5,6 +5,7 @@ export const RESET_PASSWORD = 'RESET_PASSWORD';
 export const ERROR = 'ERROR';
 export const OPEN_DIALOG = "OPEN_DIALOG";
 export const OPEN_DIALOG_ERROR = "OPEN_DIALOG_ERROR";
+export const LOAD_USER = 'LOAD_USER';
 
 export const requestLogin = (login, password) => async dispatch => {
     try {
@@ -93,3 +94,50 @@ export const openDialog = reverse => async dispatch => {
         console.log(e)
     }
 };
+
+export const loadUser = () => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'query{ user{username mail name surname  } }'})
+            }
+        );
+        const json = await res.json();
+        dispatch({
+            type: LOAD_USER,
+            username: json.data.user.username,
+            user :  json.data.user
+        });
+    } catch(e) {
+        console.log(e)
+    }
+
+}
+
+export const saveUser = (query) => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{ updateUser('+query+'){username mail name surname  } }'})
+            }
+        );
+        const json = await res.json();
+        dispatch({
+            type: LOAD_USER,
+            username: json.data.updateUser.username,
+            user :  json.data.updateUser
+        });
+    } catch(e) {
+        console.log(e)
+    }
+
+}
+
