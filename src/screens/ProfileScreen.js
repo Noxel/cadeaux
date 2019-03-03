@@ -67,7 +67,7 @@ class ProfileScreen extends Component{
             if(this.state.username !== this.props.user.username) query += ' username:"'+this.state.username+'" '
             if(this.state.surname !== this.props.user.surname) query += ' surname:"'+this.state.surname+'" '
             if(this.state.mail !== this.props.user.mail) query += ' mail:"'+this.state.mail+'" '
-            if(this.state.password === this.state.password && this.state.password) query += ' password:"'+this.state.password+'" '
+            if(this.state.password === this.state.verif && this.state.password) query += ' password:"'+this.state.password+'" '
             console.log(query);
             if(query !== '')this.props.dispatch(saveUser(query))
         }
@@ -98,7 +98,6 @@ class ProfileScreen extends Component{
         return(
             <div className={classes.container}>
                 <MuiThemeProvider theme={theme}>
-                    {this.props.user.surname}
                     <TextField
                         id="username"
                         label="Nom d'utilisateur"

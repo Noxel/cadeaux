@@ -57,7 +57,7 @@ export const requestSignup = (login, password, name, surname, mail) => async dis
 
 export const requestResetPassword = (username) => async dispatch => {
     try {
-        const res = await fetch(
+        await fetch(
             'https://www.nokxs.com/api/',
             {
                 method: 'POST',
