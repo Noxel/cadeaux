@@ -63,16 +63,14 @@ class ProfileScreen extends Component{
         } else {
             this.setState({error: false})
             let query =''
-            if(this.state.name !== this.props.user.name) query += ' name:"'+this.state.name+'" '
-            if(this.state.username !== this.props.user.username) query += ' username:"'+this.state.username+'" '
-            if(this.state.surname !== this.props.user.surname) query += ' surname:"'+this.state.surname+'" '
-            if(this.state.mail !== this.props.user.mail) query += ' mail:"'+this.state.mail+'" '
-            if(this.state.password === this.state.verif && this.state.password) query += ' password:"'+this.state.password+'" '
+            if(this.state.name !== this.props.user.name) query += ' name:"'+this.state.name+'", '
+            if(this.state.username !== this.props.user.username) query += ' username:"'+this.state.username+'", '
+            if(this.state.surname !== this.props.user.surname) query += ' surname:"'+this.state.surname+'", '
+            if(this.state.mail !== this.props.user.mail) query += ' mail:"'+this.state.mail+'", '
+            if(this.state.password === this.state.verif && this.state.password) query += ' password:"'+this.state.password+'", '
             console.log(query);
             if(query !== '')this.props.dispatch(saveUser(query))
         }
-
-        console.log(this.state)
     }
 
     state = {

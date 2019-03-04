@@ -6,6 +6,12 @@ export const ERROR = 'ERROR';
 export const OPEN_DIALOG = "OPEN_DIALOG";
 export const OPEN_DIALOG_ERROR = "OPEN_DIALOG_ERROR";
 export const LOAD_USER = 'LOAD_USER';
+export const LOAD_CONTACTS = 'LOAD_CONTACTS';
+export const MODAL_CONTACT = 'MODAL_CONTACT';
+export const MODAL_ADDCONTACT = 'MODAL_ADDCONTACT';
+export const LOAD_CONTACT = 'LOAD_CONTACT';
+export const ADD_CONTACT = 'ADD_CONTACT';
+export const DEL_CONTACT = 'DEL_CONTACT';
 
 export const requestLogin = (login, password) => async dispatch => {
     try {
@@ -140,4 +146,114 @@ export const saveUser = (query) => async (dispatch, state) => {
     }
 
 }
+
+export const loadContacts = () => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'query{ contacts{id name surname birthday{date} link{username}}}'})
+            }
+        );
+        const json = await res.json();
+        dispatch({
+            type: LOAD_CONTACTS,
+            contacts: json.data.contacts,
+        });
+    } catch(e) {
+        console.log(e)
+    }
+
+}
+
+export const loadContact = (id) => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'query{ contact(id:"'+id+'"){name surname birthday{date} link{username} dates{id date} gifts{id name}}}'})
+            }
+        );
+        const json = await res.json();
+        dispatch({
+            type: LOAD_CONTACT,
+            contact: json.data.contact,
+        });
+        dispatch({
+            type: MODAL_CONTACT,
+            modal: true
+        })
+    } catch(e) {
+        console.log(e)
+    }
+
+}
+
+export const delContact = (id) => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{ deleteContact(id:"'+id+'"){id}}'})
+            }
+        );
+        const json = await res.json();
+        dispatch({ type: DEL_CONTACT, id: json.data.deleteContact.id})
+    } catch(e) {
+        console.log(e)
+    }
+
+}
+export const addContact = (query) => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{ createContact('+query+'){ name, surname, id }}'})
+            }
+        );
+        const json = await res.json();
+        dispatch({ type: ADD_CONTACT, contact: json.data.createContact})
+        dispatch({ type: MODAL_ADDCONTACT, modal: false})
+    } catch(e) {
+        console.log(e)
+    }
+
+}
+/*
+export const updateContact = (query) => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{ updateContact('+query+'){}'})
+            }
+        );
+        const json = await res.json();
+
+    } catch(e) {
+        console.log(e)
+    }
+
+}*/
+
+export const modalAddContact = (bool) => dispatch => {dispatch({ type: MODAL_ADDCONTACT, modal: bool})}
+
+
+
 

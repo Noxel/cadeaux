@@ -7,6 +7,7 @@ import reducer from './Reducer.js';
 import {BrowserRouter} from "react-router-dom";
 import HomeScreen from './screens/HomeScreen.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import ModalContact from './components/ModalContact';
 
 
 const middleware = [thunk];
@@ -39,8 +40,11 @@ class App extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider theme={theme}>
-          <BrowserRouter>  
-            <HomeScreen />
+          <BrowserRouter>
+            <>
+              <HomeScreen />
+              <ModalContact/>
+            </>
           </BrowserRouter>
         </MuiThemeProvider>
       </Provider>
