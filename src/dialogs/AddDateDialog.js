@@ -6,20 +6,24 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { openDialog } from '../Actions';
+import { openAddDateDialog } from '../Actions';
+import { TextField } from '@material-ui/core';
 
-class CalendarDialog extends React.Component {
+class AddDateDialog extends React.Component {
 
     handleClickOpen = () => {
         this.setState({ open: this.props.openDialog });
     };
 
     handleClose = () => {
-        this.props.dispatch(openDialog(false))
+        this.props.dispatch(openAddDateDialog(false))
     };
 
+    addDate = (event) => {
+        console.log(event)
+    }
+
   render() {
-    const date = new Date(this.props.date)
     return (
       <div>
         <Dialog
@@ -28,14 +32,26 @@ class CalendarDialog extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Liste des cadeaux du "+date.toLocaleDateString()}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Ajouter une date événementielle"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Budget: {this.props.budget}€
-              {this.props.description}
+            <TextField
+              autoFocus
+              margin="dense"
+              id="date"
+              label="Date"
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+            />
             </DialogContentText>
           </DialogContent>
           <DialogActions>
+            <Button onClick={(event) => this.addDate(event)} color="primary">
+              Ajouter
+            </Button>
             <Button onClick={this.handleClose} color="primary">
               Fermer
             </Button>
@@ -47,7 +63,7 @@ class CalendarDialog extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return ({openDialog: state.openDialog})
+    return ({openDialog: state.openAddDateDialog})
 }
 
-export default connect(mapStateToProps)(CalendarDialog);
+export default connect(mapStateToProps)(AddDateDialog);

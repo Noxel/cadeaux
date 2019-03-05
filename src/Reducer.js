@@ -1,12 +1,14 @@
-import {ERROR, LOAD_USER, LOGIN_SUCCESS, LOGOUT_SUCCESS, OPEN_DIALOG, RESET_PASSWORD, SIGNUP_SUCCESS} from "./Actions";
+import {ERROR, LOAD_USER, LOGIN_SUCCESS, LOGOUT_SUCCESS, OPEN_DIALOG, RESET_PASSWORD, SIGNUP_SUCCESS, REQUEST_DATES, OPEN_ADD_DATE_DIALOG} from "./Actions";
 
 const initialState = {
     token: null,
     username: '',
     user: {},
+    dates: [],
     error: '',
     message: '',
     openDialog: false,
+    openAddDateDialog: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -46,6 +48,16 @@ const reducer = (state = initialState, action) => {
             };
         case LOAD_USER:
             return {...state, username: action.username, user: action.user };
+        case REQUEST_DATES:
+            return {
+                ...state,
+                dates: action.payload
+            };
+        case OPEN_ADD_DATE_DIALOG:
+            return {
+                ...state,
+                openAddDateDialog: action.payload
+            };
         default:
             return state
     }
