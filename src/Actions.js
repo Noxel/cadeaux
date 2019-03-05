@@ -6,6 +6,8 @@ export const ERROR = 'ERROR';
 export const OPEN_DIALOG = "OPEN_DIALOG";
 export const OPEN_DIALOG_ERROR = "OPEN_DIALOG_ERROR";
 export const LOAD_USER = 'LOAD_USER';
+export const REQUEST_DATES = 'REQUEST_DATES';
+export const OPEN_ADD_DATE_DIALOG = "OPEN_ADD_DATE_DIALOG";
 export const LOAD_CONTACTS = 'LOAD_CONTACTS';
 export const MODAL_CONTACT = 'MODAL_CONTACT';
 export const MODAL_ADDCONTACT = 'MODAL_ADDCONTACT';
@@ -147,6 +149,28 @@ export const saveUser = (query) => async (dispatch, state) => {
 
 }
 
+export const requestDates = () => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'query{ dates{date contacts{name surname} gifts{name price} budget description  } }'})
+            }
+        );
+        const json = await res.json();
+        dispatch({
+            type: REQUEST_DATES,
+            payload: json.data.dates,
+        });
+    } catch(e) {
+        console.log(e)
+    }
+
+}
+
 export const loadContacts = () => async (dispatch, state) => {
     try{
         const res = await fetch(
@@ -168,6 +192,16 @@ export const loadContacts = () => async (dispatch, state) => {
     }
 
 }
+
+
+export const openAddDateDialog = reverse => async dispatch => {
+    try {
+        dispatch({type: OPEN_ADD_DATE_DIALOG, payload: reverse})
+    } catch (e) {
+        console.log(e)
+    }
+};
+
 
 export const loadContact = (id) => async (dispatch, state) => {
     try{
@@ -253,7 +287,4 @@ export const updateContact = (query) => async (dispatch, state) => {
 }*/
 
 export const modalAddContact = (bool) => dispatch => {dispatch({ type: MODAL_ADDCONTACT, modal: bool})}
-
-
-
 
