@@ -9,8 +9,10 @@ export const LOAD_USER = 'LOAD_USER';
 export const LOAD_CONTACTS = 'LOAD_CONTACTS';
 export const MODAL_CONTACT = 'MODAL_CONTACT';
 export const MODAL_ADDCONTACT = 'MODAL_ADDCONTACT';
+export const MODAL_UPDATECONTACT = 'MODAL_UPDATECONTACT';
 export const LOAD_CONTACT = 'LOAD_CONTACT';
 export const ADD_CONTACT = 'ADD_CONTACT';
+export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 export const DEL_CONTACT = 'DEL_CONTACT';
 
 export const requestLogin = (login, password) => async dispatch => {
@@ -169,22 +171,29 @@ export const loadContacts = () => async (dispatch, state) => {
 
 }
 
-export const loadContact = (id) => async (dispatch, state) => {
+export const loadContact = (id, noModal) => async (dispatch, state) => {
     try{
-        const res = await fetch(
-            'https://www.nokxs.com/api/',
-            {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'query{ contact(id:"'+id+'"){name surname birthday{date} link{username} dates{id date} gifts{id name}}}'})
-            }
-        );
-        const json = await res.json();
-        dispatch({
-            type: LOAD_CONTACT,
-            contact: json.data.contact,
-        });
+        console.log(id,state().contact.id )
+        if(state().contact.id !== id) {
+            const res = await fetch(
+                'https://www.nokxs.com/api/',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + state().token.rawToken
+                    },
+                    body: JSON.stringify({query: 'query{ contact(id:"' + id + '"){id name surname birthday{date} link{username} dates{id date} gifts{id name}}}'})
+                }
+            );
+
+            const json = await res.json();
+            dispatch({
+                type: LOAD_CONTACT,
+                contact: json.data.contact,
+            });
+        }
+        if(!noModal)
         dispatch({
             type: MODAL_CONTACT,
             modal: true
@@ -230,9 +239,8 @@ export const addContact = (query) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
 }
-/*
+
 export const updateContact = (query) => async (dispatch, state) => {
     try{
         const res = await fetch(
@@ -241,16 +249,17 @@ export const updateContact = (query) => async (dispatch, state) => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'mutation{ updateContact('+query+'){}'})
+                body: JSON.stringify({query: 'mutation{ updateContact('+query+'){id name surname birthday{date}}}'})
             }
         );
         const json = await res.json();
-
+        dispatch({ type: UPDATE_CONTACT, contact: json.data.updateContact});
+        dispatch({ type: MODAL_UPDATECONTACT, modal: false})
     } catch(e) {
         console.log(e)
     }
 
-}*/
+}
 
 export const modalAddContact = (bool) => dispatch => {dispatch({ type: MODAL_ADDCONTACT, modal: bool})}
 

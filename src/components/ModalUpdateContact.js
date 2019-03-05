@@ -8,10 +8,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import {addContact, MODAL_ADDCONTACT} from "../Actions";
+import {updateContact, MODAL_UPDATECONTACT} from "../Actions";
 import TextField from "@material-ui/core/TextField";
 import MuiThemeProvider from "@material-ui/core/es/styles/MuiThemeProvider";
 import createMuiTheme from "@material-ui/core/es/styles/createMuiTheme";
+
 
 const styles = theme => ({
     root: {
@@ -42,12 +43,29 @@ const theme = createMuiTheme({
     typography: { useNextVariants: true },
 });
 
-class ModalAddContact extends Component {
+class ModalUpdateContact extends Component {
 
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.contact !== this.props.contact){
+            let birthday = '';
+            if(this.props.contact.birthday){
+                birthday = this.props.contact.birthday.date.split('T')[0]
+
+            }
+            this.setState( {
+                name: this.props.contact.name,
+                surname: this.props.contact.surname,
+                birthday: birthday ,
+            })
+
+        }
+
+    }
 
     handleCloseModal = () => {
         this.props.dispatch({
-            type: MODAL_ADDCONTACT,
+            type: MODAL_UPDATECONTACT,
             modal: false
         });
     };
@@ -60,11 +78,12 @@ class ModalAddContact extends Component {
         } else {
             this.setState({errorN: false, errorS: false})
             let query =''
+            query+= ' id:"'+this.props.contact.id+'", '
             query += ' name:"'+this.state.name+'", '
             query += ' surname:"'+this.state.surname+'", '
+            query += ' birthday:"'+new Date(this.state.birthday).toISOString()+'", '
             if(query !== ''){
-                this.setState({name: '', surname: ''});
-                this.props.dispatch(addContact(query))
+                this.props.dispatch(updateContact(query))
             }
         }
     }
@@ -72,6 +91,7 @@ class ModalAddContact extends Component {
     state = {
         name: '',
         surname: '',
+        birthday:'',
         errorN: false,
         errorS: false,
     }
@@ -91,7 +111,7 @@ class ModalAddContact extends Component {
                 onClose={this.handleCloseModal}
                 aria-labelledby="responsive-dialog-title"
             >
-                <DialogTitle id="responsive-dialog-title">{'Ajouter un contact'}</DialogTitle>
+                <DialogTitle id="responsive-dialog-title">{'Modifier le contact'}</DialogTitle>
                 <Divider variant="fullWidth" />
                 <DialogContent>
                     <div className={classes.container}>
@@ -116,6 +136,17 @@ class ModalAddContact extends Component {
                                 margin="normal"
                                 variant="outlined"
                             />
+                            <TextField
+                                id="date"
+                                label="Date d'anniversaire"
+                                type="date"
+                                value={this.state.birthday}
+                                onChange={this.handleChange('birthday')}
+                                className={classes.textField}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
                         </MuiThemeProvider>
                     </div>
                 </DialogContent>
@@ -135,7 +166,8 @@ class ModalAddContact extends Component {
 }
 
 const mapStateToProps = state => ({
-    modal : state.modalAddContact
+    contact: state.contact,
+    modal : state.modalUpdateContact
 });
 
-export default  withMobileDialog()(withStyles(styles, { withTheme: true })(connect(mapStateToProps)(ModalAddContact)));
+export default  withMobileDialog()(withStyles(styles, { withTheme: true })(connect(mapStateToProps)(ModalUpdateContact)));
