@@ -9,7 +9,7 @@ import {
     LOAD_CONTACTS,
     LOAD_CONTACT,
     REQUEST_DATES, OPEN_ADD_DATE_DIALOG,
-    MODAL_CONTACT, MODAL_ADDCONTACT, ADD_CONTACT, DEL_CONTACT
+    MODAL_CONTACT, MODAL_ADDCONTACT, ADD_CONTACT, DEL_CONTACT, MODAL_UPDATECONTACT, UPDATE_CONTACT
 } from "./Actions";
 
 const initialState = {
@@ -20,12 +20,14 @@ const initialState = {
     error: '',
     message: '',
     contacts: [],
-    contact: { dates: [],
+    contact: {  birthday: {},
+                dates: [],
                 gifts: [],},
     openDialog: false,
     openAddDateDialog: false,
     modalContact: false,
     modalAddContact: false,
+    modalUpdateContact: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -83,10 +85,20 @@ const reducer = (state = initialState, action) => {
             return  {...state, modalContact: action.modal};
         case MODAL_ADDCONTACT:
             return {...state, modalAddContact: action.modal};
+        case MODAL_UPDATECONTACT:
+            return {...state, modalUpdateContact: action.modal};
         case ADD_CONTACT :
             return {...state, contacts: [...state.contacts, action.contact]};
         case DEL_CONTACT:
             return {...state, contacts: state.contacts.filter((item)=>(item.id !== action.id))};
+        case UPDATE_CONTACT:
+            return {...state, contacts: state.contacts.map((item)=>{ if( item.id === action.contact.id ){
+                                                                                    item.name = action.contact.name;
+                                                                                    item.surname = action.contact.surname;
+                                                                                    item.birthday = action.contact.birthday;
+                                                                                }
+                                                                                return item
+                                                                            })};
         default:
             return state
     }

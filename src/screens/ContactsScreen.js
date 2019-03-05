@@ -13,9 +13,16 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import withMobileDialog from "@material-ui/core/es/withMobileDialog";
 import connect from "react-redux/es/connect/connect";
-import {delContact, loadContact, loadContacts, modalAddContact} from "../Actions";
+import {
+    delContact,
+    loadContact,
+    loadContacts,
+    MODAL_UPDATECONTACT,
+    modalAddContact
+} from "../Actions";
 import FabButton from "../components/FabButton";
 import ModalAddContact from "../components/ModalAddContact";
+import ModalUpdateContact from "../components/ModalUpdateContact";
 
 const styles = theme => ({
     root: {
@@ -50,10 +57,11 @@ class ContactsScreen extends Component{
         menu : null,
         modal : false,
         value: 0,
+        id: '',
     };
 
-    handleClick = event => {
-        this.setState({ menu: event.currentTarget});
+    handleClick = (event, id) => {
+        this.setState({ menu: event.currentTarget, id: id});
     };
     handleClose = () => {
         this.setState({ menu: null });
@@ -61,11 +69,6 @@ class ContactsScreen extends Component{
     handleClickModal = (id) => {
         this.props.dispatch(loadContact(id));
     };
-
-
-
-
-
 
     render(){
         const { menu } = this.state;
@@ -94,24 +97,23 @@ class ContactsScreen extends Component{
                                     }
                                     onClick={()=> {this.handleClickModal(item.id)}}
                                 />
-                                <IconButton aria-label={"More"} aria-haspopup={"true"} onClick={this.handleClick}>
+                                <IconButton aria-label={"More"} aria-haspopup={"true"} onClick={(e)=>{this.handleClick(e, item.id)}}>
                                     <MoreVert/>
                                 </IconButton>
-                                <Menu id="menu" anchorEl={menu} open={open} onClose={this.handleClose}>
+                                <Menu anchorEl={menu} open={open} onClose={this.handleClose}>
                                     <MenuItem onClick={() => {
-                                        this.props.dispatch(delContact(item.id))
+                                        this.props.dispatch(delContact(this.state.id))
                                     }}>
                                         Supprimer
                                     </MenuItem>
                                     <MenuItem onClick={() => {
-                                        console.log('Update')
+                                        this.props.dispatch(loadContact(this.state.id, true))
+                                        this.props.dispatch({
+                                            type: MODAL_UPDATECONTACT,
+                                            modal: true
+                                        })
                                     }}>
                                         Modifer
-                                    </MenuItem>
-                                    <MenuItem onClick={() => {
-                                        console.log('Liste de souhait')
-                                    }}>
-                                        Liste de souhait
                                     </MenuItem>
                                 </Menu>
                             </ListItem>
@@ -121,6 +123,7 @@ class ContactsScreen extends Component{
                 </List>
                 <FabButton fonct={modalAddContact}/>
                 <ModalAddContact/>
+                <ModalUpdateContact/>
             </div>
         );
     }
