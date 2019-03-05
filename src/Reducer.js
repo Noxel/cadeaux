@@ -8,6 +8,7 @@ import {
     SIGNUP_SUCCESS,
     LOAD_CONTACTS,
     LOAD_CONTACT,
+    REQUEST_DATES, OPEN_ADD_DATE_DIALOG,
     MODAL_CONTACT, MODAL_ADDCONTACT, ADD_CONTACT, DEL_CONTACT, MODAL_UPDATECONTACT, UPDATE_CONTACT
 } from "./Actions";
 
@@ -15,6 +16,7 @@ const initialState = {
     token: null,
     username: '',
     user: {},
+    dates: [],
     error: '',
     message: '',
     contacts: [],
@@ -22,6 +24,7 @@ const initialState = {
                 dates: [],
                 gifts: [],},
     openDialog: false,
+    openAddDateDialog: false,
     modalContact: false,
     modalAddContact: false,
     modalUpdateContact: false,
@@ -64,6 +67,16 @@ const reducer = (state = initialState, action) => {
             };
         case LOAD_USER:
             return {...state, username: action.username, user: action.user };
+        case REQUEST_DATES:
+            return {
+                ...state,
+                dates: action.payload
+            };
+        case OPEN_ADD_DATE_DIALOG:
+            return {
+                ...state,
+                openAddDateDialog: action.payload
+            };
         case LOAD_CONTACTS:
             return {...state, contacts: action.contacts };
         case LOAD_CONTACT:
