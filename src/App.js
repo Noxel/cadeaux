@@ -7,7 +7,7 @@ import reducer from './Reducer.js';
 import {BrowserRouter} from "react-router-dom";
 import HomeScreen from './screens/HomeScreen.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import ModalContact from './components/ModalContact';
+import ModalContact from './dialogs/ModalContact';
 
 
 const middleware = [thunk];

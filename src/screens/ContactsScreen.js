@@ -16,13 +16,15 @@ import connect from "react-redux/es/connect/connect";
 import {
     delContact,
     loadContact,
-    loadContacts,
+    loadContacts, MODAL_LINKCONTACT,
     MODAL_UPDATECONTACT,
     modalAddContact
 } from "../Actions";
 import FabButton from "../components/FabButton";
-import ModalAddContact from "../components/ModalAddContact";
-import ModalUpdateContact from "../components/ModalUpdateContact";
+import ModalAddContact from "../dialogs/ModalAddContact";
+import ModalUpdateContact from "../dialogs/ModalUpdateContact";
+import ModalLinkContact from "../dialogs/ModalLinkContact";
+import Grow from "@material-ui/core/Grow";
 
 const styles = theme => ({
     root: {
@@ -80,7 +82,7 @@ class ContactsScreen extends Component{
 
                     {this.props.contacts.map((item, index) => {
                         let birthday = item.birthday? new Date(item.birthday.date) : {};
-                        return <div key={index}>
+                        return  <Grow in={true} timeout={500*index} key={index} ><div >
                             <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
                                     <Avatar className={classes.avatar}>{item.name.charAt(0) + item.surname.charAt(0)}</Avatar>
@@ -113,17 +115,27 @@ class ContactsScreen extends Component{
                                             modal: true
                                         })
                                     }}>
-                                        Modifer
+                                        Modifier
+                                    </MenuItem>
+                                    <MenuItem onClick={() => {
+                                        this.props.dispatch({
+                                            type: MODAL_LINKCONTACT,
+                                            modal: true,
+                                            id: this.state.id
+                                        })
+                                    }}>
+                                        LinkUser
                                     </MenuItem>
                                 </Menu>
                             </ListItem>
                             <Divider variant="fullWidth"/>
-                        </div>
+                        </div></Grow>
                     })}
                 </List>
                 <FabButton fonct={modalAddContact}/>
                 <ModalAddContact/>
                 <ModalUpdateContact/>
+                <ModalLinkContact/>
             </div>
         );
     }

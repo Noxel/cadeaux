@@ -16,6 +16,8 @@ export const LOAD_CONTACT = 'LOAD_CONTACT';
 export const ADD_CONTACT = 'ADD_CONTACT';
 export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 export const DEL_CONTACT = 'DEL_CONTACT';
+export const MODAL_LINKCONTACT = 'MODAL_LINKCONTACT';
+export const DEL_REQUEST ='DEL_REQUEST';
 
 export const requestLogin = (login, password) => async dispatch => {
     try {
@@ -113,7 +115,7 @@ export const loadUser = () => async (dispatch, state) => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'query{ user{username mail name surname  } }'})
+                body: JSON.stringify({query: 'query{ user{username mail name surname request{id user{username} }   } }'})
             }
         );
         const json = await res.json();
@@ -298,3 +300,82 @@ export const updateContact = (query) => async (dispatch, state) => {
 
 export const modalAddContact = (bool) => dispatch => {dispatch({ type: MODAL_ADDCONTACT, modal: bool})}
 
+export const createRequest = (query) => async (dispatch, state) => {
+    try{
+        await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{ createRequest('+query+')}'})
+            }
+        );
+        dispatch({ type: MODAL_LINKCONTACT, modal: false})
+    } catch(e) {
+        console.log(e)
+    }
+
+}
+
+export const loadRequest = () => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'query{ user{username request{id user{username} }  } }'})
+            }
+        );
+        const json = await res.json();
+        dispatch({
+            type: LOAD_USER,
+            user :  json.data.user
+        });
+    } catch(e) {
+        console.log(e)
+    }
+
+}
+
+export const accepteRequest = (id) => async (dispatch, state) => {
+    try{
+        await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{accepteRequest(id:"'+id+'")  }'})
+            }
+        );
+        dispatch({
+            type: DEL_REQUEST,
+            id :  id
+        });
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+export const deleteRequest = (id) => async (dispatch, state) => {
+    try{
+        await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{deleteRequest(id:"'+id+'")  }'})
+            }
+        );
+        dispatch({
+            type: DEL_REQUEST,
+            id :  id
+        });
+    } catch(e) {
+        console.log(e)
+    }
+}
