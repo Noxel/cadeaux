@@ -85,11 +85,11 @@ class ContactsScreen extends Component{
         const { classes  } = this.props;
         return(
             <div className={classes.container}>
-                <List className={classes.root}>
+                <List className={classes.root} >
 
                     {this.props.contacts.map((item, index) => {
                         let birthday = item.birthday? new Date(item.birthday.date) : {};
-                        return  <Grow in={true} timeout={500*index} key={index} ><div >
+                        return  <Grow in={true} timeout={400*index<6000?500*index:400}  ><div key={index}>
                             <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
                                     <Avatar className={classes.avatar}>{item.name.charAt(0) + item.surname.charAt(0)}</Avatar>
@@ -127,7 +127,7 @@ class ContactsScreen extends Component{
                                             id: this.state.id
                                         })
                                     }}>
-                                        LinkUser
+                                        Connecter
                                     </MenuItem>
                                 </Menu>
                             </ListItem>
@@ -141,17 +141,17 @@ class ContactsScreen extends Component{
                 <ModalLinkContact/>
                 <ModalContact/>
                 <Dialog open={this.state.confDel} disableEnforceFocus >
-                    <DialogTitle>{'Voulez vous supprimez cette élément ?'}</DialogTitle>
+                    <DialogTitle>{'Voulez-vous supprimer cet élément ? '}</DialogTitle>
                     <DialogActions>
                         <Button onClick={()=>{
                                                 this.props.dispatch(delContact(this.state.id))
                                                 this.setState({ confDel: false, menu: null })
                                         }}
                                 color="secondary" autoFocus>
-                            Save
+                            Accepter
                         </Button>
                         <Button onClick={()=>{this.setState({ confDel: false })}} color="primary" autoFocus>
-                            Close
+                            Annuler
                         </Button>
                     </DialogActions>
                 </Dialog>

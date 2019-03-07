@@ -87,7 +87,7 @@ class ModalLinkContact extends Component {
                 onClose={this.handleCloseModal}
                 aria-labelledby="responsive-dialog-title"
             >
-                <DialogTitle id="responsive-dialog-title">{'Link un contact a un utilisateur'}</DialogTitle>
+                <DialogTitle id="responsive-dialog-title">{'Link ce contact a un utilisateur ?'}</DialogTitle>
                 <Divider variant="fullWidth" />
                 <DialogContent>
                     <div className={classes.container}>
@@ -108,10 +108,10 @@ class ModalLinkContact extends Component {
                 <Divider variant="fullWidth" />
                 <DialogActions>
                     <Button onClick={()=>{this.submit()}} color="secondary" autoFocus>
-                        Save
+                        Accepter
                     </Button>
                     <Button onClick={this.handleCloseModal} color="primary" autoFocus>
-                        Close
+                        Annuler
                     </Button>
                 </DialogActions>
             </Dialog>

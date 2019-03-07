@@ -102,17 +102,17 @@ class HomeScreen extends Component{
                                                 <Grow in={true} timeout={300*index} key={index} >
                                                     <>
                                                     <ListItem alignItems="flex-start">
-                                                        <ListItemText primary={this.props.user.request[index].user.username+" vous veut dans ces contact"}/>
+                                                        <ListItemText primary={this.props.user.request[index].user.username+" vous veut dans ces contacts"}/>
                                                         <ListItemIcon  onClick={()=>{
                                                                 this.handleClose()
                                                                 this.props.dispatch(accepteRequest(item.id))}
-                                                            } aria-label="Accepte" >
+                                                            } aria-label="Accepter" >
                                                                 <DoneIcon color="secondary"/>
                                                         </ListItemIcon>
                                                         <ListItemIcon  onClick={() => {
                                                                 this.handleClose()
                                                                 this.props.dispatch(deleteRequest(item.id))}
-                                                            } aria-label="Refuse">
+                                                            } aria-label="Refuser">
                                                                 <CloseIcon color="primary"/>
                                                         </ListItemIcon>
                                                     </ListItem>

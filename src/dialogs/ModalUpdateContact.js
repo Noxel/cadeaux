@@ -153,10 +153,10 @@ class ModalUpdateContact extends Component {
                 <Divider variant="fullWidth" />
                 <DialogActions>
                     <Button onClick={()=>{this.submit()}} color="secondary" autoFocus>
-                        Save
+                        Accepter
                     </Button>
                     <Button onClick={this.handleCloseModal} color="primary" autoFocus>
-                        Close
+                        Annuler
                     </Button>
                 </DialogActions>
             </Dialog>
