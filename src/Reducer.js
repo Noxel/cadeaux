@@ -10,7 +10,7 @@ import {
     LOAD_CONTACT,
     REQUEST_DATES, OPEN_ADD_DATE_DIALOG,
     MODAL_CONTACT, MODAL_ADDCONTACT, ADD_CONTACT, DEL_CONTACT, MODAL_UPDATECONTACT, UPDATE_CONTACT,
-    MODAL_LINKCONTACT, DEL_REQUEST
+    MODAL_LINKCONTACT, DEL_REQUEST, WAIT
 } from "./Actions";
 
 const initialState = {
@@ -34,7 +34,8 @@ const initialState = {
     modalAddContact: false,
     modalUpdateContact: false,
     modalLinkContact: false,
-    idLinkContact:''
+    idLinkContact:'',
+    wait: false,
 
 };
 
@@ -111,6 +112,8 @@ const reducer = (state = initialState, action) => {
             return {...state, modalLinkContact: action.modal, idLinkContact: action.id};
         case DEL_REQUEST:
             return {...state, user: {...state.user, request: state.user.request.filter(item=>(item.id !== action.id))}};
+        case WAIT:
+            return {...state, wait: action.wait};
         default:
             return state
     }

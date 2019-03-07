@@ -18,8 +18,10 @@ export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 export const DEL_CONTACT = 'DEL_CONTACT';
 export const MODAL_LINKCONTACT = 'MODAL_LINKCONTACT';
 export const DEL_REQUEST ='DEL_REQUEST';
+export const WAIT = 'WAIT';
 
 export const requestLogin = (login, password) => async dispatch => {
+    dispatch({type: WAIT, wait: true});
     try {
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -41,9 +43,11 @@ export const requestLogin = (login, password) => async dispatch => {
     } catch (e) {
 
     }
+    dispatch({type: WAIT, wait: false});
 };
 
 export const requestSignup = (login, password, name, surname, mail) => async dispatch => {
+    dispatch({type: WAIT, wait: true});
     try {
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -65,6 +69,7 @@ export const requestSignup = (login, password, name, surname, mail) => async dis
     } catch (e) {
 
     }
+    dispatch({type: WAIT, wait: false});
 };
 
 export const requestResetPassword = (username) => async dispatch => {
@@ -108,6 +113,7 @@ export const openDialog = reverse => async dispatch => {
 };
 
 export const loadUser = () => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -127,10 +133,11 @@ export const loadUser = () => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
 export const saveUser = (query) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -150,7 +157,7 @@ export const saveUser = (query) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
 export const requestDates = () => async (dispatch, state) => {
@@ -176,6 +183,7 @@ export const requestDates = () => async (dispatch, state) => {
 }
 
 export const loadContacts = () => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -191,10 +199,11 @@ export const loadContacts = () => async (dispatch, state) => {
             type: LOAD_CONTACTS,
             contacts: json.data.contacts,
         });
+
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
 
@@ -208,7 +217,7 @@ export const openAddDateDialog = reverse => async dispatch => {
 
 
 export const loadContact = (id, noModal) => async (dispatch, state) => {
-
+    dispatch({type: WAIT, wait: true});
     try{
         console.log(id,state().contact.id )
         if(state().contact.id !== id) {
@@ -230,18 +239,22 @@ export const loadContact = (id, noModal) => async (dispatch, state) => {
                 contact: json.data.contact,
             });
         }
-        if(!noModal)
-        dispatch({
-            type: MODAL_CONTACT,
-            modal: true
-        })
+        if(!noModal) dispatch({
+                        type: MODAL_CONTACT,
+                        modal: true
+                    })
+        else dispatch({
+                type: MODAL_UPDATECONTACT,
+                modal: true
+            })
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
 export const delContact = (id) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -257,9 +270,10 @@ export const delContact = (id) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 export const addContact = (query) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -276,9 +290,11 @@ export const addContact = (query) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
+    dispatch({type: WAIT, wait: false});
 }
 
 export const updateContact = (query) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -295,7 +311,7 @@ export const updateContact = (query) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
 export const modalAddContact = (bool) => dispatch => {dispatch({ type: MODAL_ADDCONTACT, modal: bool})}
@@ -315,7 +331,7 @@ export const createRequest = (query) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
 export const loadRequest = () => async (dispatch, state) => {
