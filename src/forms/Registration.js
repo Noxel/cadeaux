@@ -55,9 +55,7 @@ class Registration extends Component {
 
                     <button type="submit">S'inscrire</button>
 
-                    <div className="links">
-                        <Link to="/">Déjà inscrit ? Connectez-vous</Link>
-                    </div>
+                    <Link to="/">Déjà inscrit ? Connectez-vous</Link>
                 </form>
             </>
         );

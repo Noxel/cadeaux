@@ -34,7 +34,7 @@ export const requestLogin = (login, password) => async dispatch => {
         const json = await res.json();
         const token = decodeJWT(json.data.login.token);
         const username = json.data.login.user.username;
-        localStorage.setItem('jwt', JSON.stringify(token));
+
         dispatch({
             type: LOGIN_SUCCESS,
             token: token,

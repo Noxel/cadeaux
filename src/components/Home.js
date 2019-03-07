@@ -4,13 +4,12 @@ class Home extends Component{
     render(){
         return(
             <>
-                <h1>Prochains événements</h1>
-                <div className="slider">
-                    
-                </div>
+                <p>Home</p>
             </>
         );
     }
 }
+
+
 
 export default Home;
