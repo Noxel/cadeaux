@@ -25,6 +25,10 @@ import ModalUpdateContact from "../dialogs/ModalUpdateContact";
 import ModalLinkContact from "../dialogs/ModalLinkContact";
 import Grow from "@material-ui/core/Grow";
 import ModalContact from "../dialogs/ModalContact";
+import Dialog from "@material-ui/core/es/Dialog/Dialog";
+import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
+import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
     root: {
@@ -58,6 +62,7 @@ class ContactsScreen extends Component{
     state = {
         menu : null,
         modal : false,
+        confDel: false,
         value: 0,
         id: '',
     };
@@ -71,6 +76,8 @@ class ContactsScreen extends Component{
     handleClickModal = (id) => {
         this.props.dispatch(loadContact(id));
     };
+
+
 
     render(){
         const { menu } = this.state;
@@ -104,7 +111,7 @@ class ContactsScreen extends Component{
                                 </IconButton>
                                 <Menu anchorEl={menu} open={open} onClose={this.handleClose}>
                                     <MenuItem onClick={() => {
-                                        this.props.dispatch(delContact(this.state.id))
+                                        this.setState({ confDel: true });
                                     }}>
                                         Supprimer
                                     </MenuItem>
@@ -133,6 +140,22 @@ class ContactsScreen extends Component{
                 <ModalUpdateContact/>
                 <ModalLinkContact/>
                 <ModalContact/>
+                <Dialog open={this.state.confDel} disableEnforceFocus >
+                    <DialogTitle>{'Voulez vous supprimez cette élément ?'}</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={()=>{
+                                                this.props.dispatch(delContact(this.state.id))
+                                                this.setState({ confDel: false, menu: null })
+                                        }}
+                                color="secondary" autoFocus>
+                            Save
+                        </Button>
+                        <Button onClick={()=>{this.setState({ confDel: false })}} color="primary" autoFocus>
+                            Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
             </div>
         );
     }
