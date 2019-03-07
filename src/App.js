@@ -7,7 +7,7 @@ import reducer from './Reducer.js';
 import {BrowserRouter} from "react-router-dom";
 import HomeScreen from './screens/HomeScreen.js';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import ModalContact from './dialogs/ModalContact';
+import ModalWait from "./dialogs/ModalWait";
 
 
 const middleware = [thunk];
@@ -43,7 +43,7 @@ class App extends Component {
           <BrowserRouter>
             <>
               <HomeScreen />
-              <ModalContact/>
+              <ModalWait/>
             </>
           </BrowserRouter>
         </MuiThemeProvider>

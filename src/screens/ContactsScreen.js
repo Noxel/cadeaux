@@ -17,7 +17,6 @@ import {
     delContact,
     loadContact,
     loadContacts, MODAL_LINKCONTACT,
-    MODAL_UPDATECONTACT,
     modalAddContact
 } from "../Actions";
 import FabButton from "../components/FabButton";
@@ -25,6 +24,7 @@ import ModalAddContact from "../dialogs/ModalAddContact";
 import ModalUpdateContact from "../dialogs/ModalUpdateContact";
 import ModalLinkContact from "../dialogs/ModalLinkContact";
 import Grow from "@material-ui/core/Grow";
+import ModalContact from "../dialogs/ModalContact";
 
 const styles = theme => ({
     root: {
@@ -110,10 +110,6 @@ class ContactsScreen extends Component{
                                     </MenuItem>
                                     <MenuItem onClick={() => {
                                         this.props.dispatch(loadContact(this.state.id, true))
-                                        this.props.dispatch({
-                                            type: MODAL_UPDATECONTACT,
-                                            modal: true
-                                        })
                                     }}>
                                         Modifier
                                     </MenuItem>
@@ -136,6 +132,7 @@ class ContactsScreen extends Component{
                 <ModalAddContact/>
                 <ModalUpdateContact/>
                 <ModalLinkContact/>
+                <ModalContact/>
             </div>
         );
     }
