@@ -26,10 +26,8 @@ class Login extends Component {
 
                     <button type="submit">Se connecter</button>
 
-                    <div className="links">
-                        <Link to="/registration">Créer un compte</Link>
-                        <Link to="/resetPassword">Mot de passe oublié ?</Link>
-                    </div>
+                    <Link to="/registration">Créer un compte</Link>
+                    <Link to="/resetPassword">Mot de passe oublié ?</Link>
                 </form>
             </>
         );
