@@ -21,8 +21,10 @@ class ResetPassword extends Component {
 
                     <button type="submit">Retrouver son mot de passe</button>
 
-                    <Link to="/login">Se connecter</Link>
-                    <Link to="/registration">Créer un compte</Link>
+                    <div className="links">
+                        <Link to="/login">Se connecter</Link>
+                        <Link to="/registration">Créer un compte</Link>
+                    </div>
                 </form>
             </>
         );
