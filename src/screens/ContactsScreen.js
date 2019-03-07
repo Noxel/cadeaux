@@ -16,13 +16,19 @@ import connect from "react-redux/es/connect/connect";
 import {
     delContact,
     loadContact,
-    loadContacts,
-    MODAL_UPDATECONTACT,
+    loadContacts, MODAL_LINKCONTACT,
     modalAddContact
 } from "../Actions";
 import FabButton from "../components/FabButton";
-import ModalAddContact from "../components/ModalAddContact";
-import ModalUpdateContact from "../components/ModalUpdateContact";
+import ModalAddContact from "../dialogs/ModalAddContact";
+import ModalUpdateContact from "../dialogs/ModalUpdateContact";
+import ModalLinkContact from "../dialogs/ModalLinkContact";
+import Grow from "@material-ui/core/Grow";
+import ModalContact from "../dialogs/ModalContact";
+import Dialog from "@material-ui/core/es/Dialog/Dialog";
+import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
+import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
     root: {
@@ -56,6 +62,7 @@ class ContactsScreen extends Component{
     state = {
         menu : null,
         modal : false,
+        confDel: false,
         value: 0,
         id: '',
     };
@@ -70,17 +77,19 @@ class ContactsScreen extends Component{
         this.props.dispatch(loadContact(id));
     };
 
+
+
     render(){
         const { menu } = this.state;
         const open = Boolean(menu);
         const { classes  } = this.props;
         return(
             <div className={classes.container}>
-                <List className={classes.root}>
+                <List className={classes.root} >
 
                     {this.props.contacts.map((item, index) => {
                         let birthday = item.birthday? new Date(item.birthday.date) : {};
-                        return <div key={index}>
+                        return  <Grow in={true} timeout={400*index<6000?500*index:400}  ><div key={index}>
                             <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
                                     <Avatar className={classes.avatar}>{item.name.charAt(0) + item.surname.charAt(0)}</Avatar>
@@ -102,28 +111,51 @@ class ContactsScreen extends Component{
                                 </IconButton>
                                 <Menu anchorEl={menu} open={open} onClose={this.handleClose}>
                                     <MenuItem onClick={() => {
-                                        this.props.dispatch(delContact(this.state.id))
+                                        this.setState({ confDel: true });
                                     }}>
                                         Supprimer
                                     </MenuItem>
                                     <MenuItem onClick={() => {
                                         this.props.dispatch(loadContact(this.state.id, true))
+                                    }}>
+                                        Modifier
+                                    </MenuItem>
+                                    <MenuItem onClick={() => {
                                         this.props.dispatch({
-                                            type: MODAL_UPDATECONTACT,
-                                            modal: true
+                                            type: MODAL_LINKCONTACT,
+                                            modal: true,
+                                            id: this.state.id
                                         })
                                     }}>
-                                        Modifer
+                                        Connecter
                                     </MenuItem>
                                 </Menu>
                             </ListItem>
                             <Divider variant="fullWidth"/>
-                        </div>
+                        </div></Grow>
                     })}
                 </List>
                 <FabButton fonct={modalAddContact}/>
                 <ModalAddContact/>
                 <ModalUpdateContact/>
+                <ModalLinkContact/>
+                <ModalContact/>
+                <Dialog open={this.state.confDel} disableEnforceFocus >
+                    <DialogTitle>{'Voulez-vous supprimer cet élément ? '}</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={()=>{
+                                                this.props.dispatch(delContact(this.state.id))
+                                                this.setState({ confDel: false, menu: null })
+                                        }}
+                                color="secondary" autoFocus>
+                            Accepter
+                        </Button>
+                        <Button onClick={()=>{this.setState({ confDel: false })}} color="primary" autoFocus>
+                            Annuler
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
             </div>
         );
     }

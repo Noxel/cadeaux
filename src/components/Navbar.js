@@ -10,9 +10,14 @@ import StarIcon from '@material-ui/icons/Stars';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import UndoIcon from '@material-ui/icons/Undo';
-import { requestLogout } from '../Actions';
+import {loadRequest, requestLogout} from '../Actions';
 
 class Navbar extends Component{
+
+    constructor(props){
+        super(props)
+        this.props.dispatch(loadRequest())
+    }
 
     state = {
         left: false,

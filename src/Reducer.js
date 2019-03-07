@@ -9,13 +9,18 @@ import {
     LOAD_CONTACTS,
     LOAD_CONTACT,
     REQUEST_DATES, OPEN_ADD_DATE_DIALOG,
-    MODAL_CONTACT, MODAL_ADDCONTACT, ADD_CONTACT, DEL_CONTACT, MODAL_UPDATECONTACT, UPDATE_CONTACT
+    MODAL_CONTACT, MODAL_ADDCONTACT, ADD_CONTACT, DEL_CONTACT, MODAL_UPDATECONTACT, UPDATE_CONTACT,
+    MODAL_LINKCONTACT, DEL_REQUEST, WAIT
 } from "./Actions";
 
 const initialState = {
     token: null,
     username: '',
-    user: {},
+    user: {
+        request: [
+
+        ]
+    },
     dates: [],
     error: '',
     message: '',
@@ -28,6 +33,10 @@ const initialState = {
     modalContact: false,
     modalAddContact: false,
     modalUpdateContact: false,
+    modalLinkContact: false,
+    idLinkContact:'',
+    wait: false,
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -99,6 +108,12 @@ const reducer = (state = initialState, action) => {
                                                                                 }
                                                                                 return item
                                                                             })};
+        case MODAL_LINKCONTACT:
+            return {...state, modalLinkContact: action.modal, idLinkContact: action.id};
+        case DEL_REQUEST:
+            return {...state, user: {...state.user, request: state.user.request.filter(item=>(item.id !== action.id))}};
+        case WAIT:
+            return {...state, wait: action.wait};
         default:
             return state
     }

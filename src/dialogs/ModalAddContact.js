@@ -8,11 +8,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import {updateContact, MODAL_UPDATECONTACT} from "../Actions";
+import {addContact, MODAL_ADDCONTACT} from "../Actions";
 import TextField from "@material-ui/core/TextField";
 import MuiThemeProvider from "@material-ui/core/es/styles/MuiThemeProvider";
 import createMuiTheme from "@material-ui/core/es/styles/createMuiTheme";
-
 
 const styles = theme => ({
     root: {
@@ -43,29 +42,12 @@ const theme = createMuiTheme({
     typography: { useNextVariants: true },
 });
 
-class ModalUpdateContact extends Component {
+class ModalAddContact extends Component {
 
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if(prevProps.contact !== this.props.contact){
-            let birthday = '';
-            if(this.props.contact.birthday){
-                birthday = this.props.contact.birthday.date.split('T')[0]
-
-            }
-            this.setState( {
-                name: this.props.contact.name,
-                surname: this.props.contact.surname,
-                birthday: birthday ,
-            })
-
-        }
-
-    }
 
     handleCloseModal = () => {
         this.props.dispatch({
-            type: MODAL_UPDATECONTACT,
+            type: MODAL_ADDCONTACT,
             modal: false
         });
     };
@@ -78,12 +60,11 @@ class ModalUpdateContact extends Component {
         } else {
             this.setState({errorN: false, errorS: false})
             let query =''
-            query+= ' id:"'+this.props.contact.id+'", '
             query += ' name:"'+this.state.name+'", '
             query += ' surname:"'+this.state.surname+'", '
-            query += ' birthday:"'+new Date(this.state.birthday).toISOString()+'", '
             if(query !== ''){
-                this.props.dispatch(updateContact(query))
+                this.setState({name: '', surname: ''});
+                this.props.dispatch(addContact(query))
             }
         }
     }
@@ -91,7 +72,6 @@ class ModalUpdateContact extends Component {
     state = {
         name: '',
         surname: '',
-        birthday:'',
         errorN: false,
         errorS: false,
     }
@@ -111,7 +91,7 @@ class ModalUpdateContact extends Component {
                 onClose={this.handleCloseModal}
                 aria-labelledby="responsive-dialog-title"
             >
-                <DialogTitle id="responsive-dialog-title">{'Modifier le contact'}</DialogTitle>
+                <DialogTitle id="responsive-dialog-title">{'Ajouter un contact'}</DialogTitle>
                 <Divider variant="fullWidth" />
                 <DialogContent>
                     <div className={classes.container}>
@@ -136,27 +116,16 @@ class ModalUpdateContact extends Component {
                                 margin="normal"
                                 variant="outlined"
                             />
-                            <TextField
-                                id="date"
-                                label="Date d'anniversaire"
-                                type="date"
-                                value={this.state.birthday}
-                                onChange={this.handleChange('birthday')}
-                                className={classes.textField}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
                         </MuiThemeProvider>
                     </div>
                 </DialogContent>
                 <Divider variant="fullWidth" />
                 <DialogActions>
                     <Button onClick={()=>{this.submit()}} color="secondary" autoFocus>
-                        Save
+                        Accepter
                     </Button>
                     <Button onClick={this.handleCloseModal} color="primary" autoFocus>
-                        Close
+                        Annuler
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -166,8 +135,7 @@ class ModalUpdateContact extends Component {
 }
 
 const mapStateToProps = state => ({
-    contact: state.contact,
-    modal : state.modalUpdateContact
+    modal : state.modalAddContact
 });
 
-export default  withMobileDialog()(withStyles(styles, { withTheme: true })(connect(mapStateToProps)(ModalUpdateContact)));
+export default  withMobileDialog()(withStyles(styles, { withTheme: true })(connect(mapStateToProps)(ModalAddContact)));

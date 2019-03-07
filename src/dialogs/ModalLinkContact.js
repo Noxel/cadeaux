@@ -8,7 +8,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import {addContact, MODAL_ADDCONTACT} from "../Actions";
+import {MODAL_LINKCONTACT, createRequest} from "../Actions";
 import TextField from "@material-ui/core/TextField";
 import MuiThemeProvider from "@material-ui/core/es/styles/MuiThemeProvider";
 import createMuiTheme from "@material-ui/core/es/styles/createMuiTheme";
@@ -42,38 +42,34 @@ const theme = createMuiTheme({
     typography: { useNextVariants: true },
 });
 
-class ModalAddContact extends Component {
+class ModalLinkContact extends Component {
 
 
     handleCloseModal = () => {
         this.props.dispatch({
-            type: MODAL_ADDCONTACT,
+            type: MODAL_LINKCONTACT,
             modal: false
         });
     };
 
     submit(){
-        if(this.state.name === ''  ){
-            this.setState({errorN: true})
-        } else if(this.state.surname === '') {
-            this.setState({errorS: true})
+        if(this.state.username === ''  ){
+            this.setState({error: true})
         } else {
-            this.setState({errorN: false, errorS: false})
+            this.setState({error: false})
             let query =''
-            query += ' name:"'+this.state.name+'", '
-            query += ' surname:"'+this.state.surname+'", '
+            query += ' usernameLink:"'+this.state.username+'", '
+            query += ' idContact:"'+this.props.idLinkContact+'", '
             if(query !== ''){
-                this.setState({name: '', surname: ''});
-                this.props.dispatch(addContact(query))
+                this.setState({username: ''});
+                this.props.dispatch(createRequest(query))
             }
         }
     }
 
     state = {
-        name: '',
-        surname: '',
-        errorN: false,
-        errorS: false,
+        username: '',
+        error: false,
     }
 
     handleChange = name => event => {
@@ -91,28 +87,18 @@ class ModalAddContact extends Component {
                 onClose={this.handleCloseModal}
                 aria-labelledby="responsive-dialog-title"
             >
-                <DialogTitle id="responsive-dialog-title">{'Ajouter un contact'}</DialogTitle>
+                <DialogTitle id="responsive-dialog-title">{'Link ce contact a un utilisateur ?'}</DialogTitle>
                 <Divider variant="fullWidth" />
                 <DialogContent>
                     <div className={classes.container}>
                         <MuiThemeProvider theme={theme}>
                             <TextField
-                                id="name"
-                                label="Nom"
+                                id="username"
+                                label="Username"
                                 className={classes.textField}
-                                value={this.state.name}
-                                onChange={this.handleChange('name')}
-                                error={this.state.errorN}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                            <TextField
-                                id="surname"
-                                label="Prénom"
-                                className={classes.textField}
-                                value={this.state.surname}
-                                onChange={this.handleChange('surname')}
-                                error={this.state.errorS}
+                                value={this.state.username}
+                                onChange={this.handleChange('username')}
+                                error={this.state.error}
                                 margin="normal"
                                 variant="outlined"
                             />
@@ -122,10 +108,10 @@ class ModalAddContact extends Component {
                 <Divider variant="fullWidth" />
                 <DialogActions>
                     <Button onClick={()=>{this.submit()}} color="secondary" autoFocus>
-                        Save
+                        Accepter
                     </Button>
                     <Button onClick={this.handleCloseModal} color="primary" autoFocus>
-                        Close
+                        Annuler
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -135,7 +121,7 @@ class ModalAddContact extends Component {
 }
 
 const mapStateToProps = state => ({
-    modal : state.modalAddContact
+    modal : state.modalLinkContact
 });
 
-export default  withMobileDialog()(withStyles(styles, { withTheme: true })(connect(mapStateToProps)(ModalAddContact)));
+export default  withMobileDialog()(withStyles(styles, { withTheme: true })(connect(mapStateToProps)(ModalLinkContact)));

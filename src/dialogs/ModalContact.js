@@ -62,7 +62,7 @@ class modalContact extends Component {
                     <Tabs value={this.state.value}  indicatorColor="primary" textColor={"primary"} variant={"fullWidth"} onChange={this.handleChange}>
                         <Tab label="Information" />
                         <Tab label="Cadeaux" />
-                        <Tab label="Date" />
+                        <Tab label="Dates" />
                     </Tabs>
                     <SwipeableViews
                         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
