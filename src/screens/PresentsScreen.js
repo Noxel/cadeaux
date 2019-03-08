@@ -54,8 +54,8 @@ class PresentsScreen extends Component{
         idGift: 0,
     };
 
-    handleClick = event => {
-        this.setState({ menu: event.currentTarget});
+    handleClick = (event, id) => {
+        this.setState({ menu: event.currentTarget, idGift: id});
     };
 
     handleClose = () => {
@@ -66,9 +66,8 @@ class PresentsScreen extends Component{
         this.props.dispatch(loadGift(id));
     };
 
-    handleClickDialog = (id) => {
-        console.log("ID:"+id)
-        this.setState({idGift: id})
+    handleClickDialog = () => {
+        this.setState({menu: null})
     }
 
     render(){
@@ -96,7 +95,7 @@ class PresentsScreen extends Component{
                                         </Typography>
                                     }
                                 />
-                                <IconButton aria-label={"More"} aria-haspopup={"true"} onClick={this.handleClick}>
+                                <IconButton aria-label={"More"} aria-haspopup={"true"} onClick={(e)=>{this.handleClick(e, gift.id)}}>
                                     <MoreVert/>
                                 </IconButton>
                                 <Menu id="menu" anchorEl={menu} open={open} onClose={this.handleClose}>
@@ -106,7 +105,7 @@ class PresentsScreen extends Component{
                                         Modifier
                                     </MenuItem>
                                     <MenuItem onClick={() => {
-                                        console.log("ID GIFT:"+gift.id);this.handleClickDialog(gift.id)
+                                        this.handleClickDialog()
                                         this.props.dispatch(openDelGiftDialog(true))
                                     }}>
                                         Supprimer

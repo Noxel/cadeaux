@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { openAddGiftDialog, addGift } from '../Actions';
 import { TextField } from '@material-ui/core';
@@ -16,16 +15,12 @@ class AddGiftDialog extends React.Component {
         name: null
     }
 
-    handleClickOpen = () => {
-        this.setState({ open: this.props.openDialog });
-    };
-
     handleClose = () => {
         this.props.dispatch(openAddGiftDialog(false))
     };
 
     addGift = () => {  
-      let res = this.state.name !== null ? this.props.dispatch(addGift(this.state.name)) : null
+      if(this.state.name !== null)this.props.dispatch(addGift(this.state.name))
       this.props.dispatch(openAddGiftDialog(false))
 
     }
@@ -46,7 +41,6 @@ class AddGiftDialog extends React.Component {
           <DialogTitle id="alert-dialog-title">{"Ajouter un cadeau à offrir"}</DialogTitle>
           <Divider/>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
             <TextField
               autoFocus
               margin="dense"
@@ -59,7 +53,6 @@ class AddGiftDialog extends React.Component {
               fullWidth
               onChange={(event) => this.changeName(event.target.value)}
             />
-            </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.addGift()} color="primary">

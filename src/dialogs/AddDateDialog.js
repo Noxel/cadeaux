@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { openAddDateDialog, addDate } from '../Actions';
 import { TextField } from '@material-ui/core';
@@ -15,16 +14,12 @@ class AddDateDialog extends React.Component {
       sendDate: null
     }
 
-    handleClickOpen = () => {
-        this.setState({ open: this.props.openDialog });
-    };
-
     handleClose = () => {
         this.props.dispatch(openAddDateDialog(false))
     };
 
     addDate = () => {  
-      let res = this.state.sendDate !== null ? this.props.dispatch(addDate(this.state.sendDate)) : null
+      if(this.state.sendDate !== null)this.props.dispatch(addDate(this.state.sendDate))
       this.props.dispatch(openAddDateDialog(false))
 
     }
@@ -45,7 +40,6 @@ class AddDateDialog extends React.Component {
         >
           <DialogTitle id="alert-dialog-title">{"Ajouter une date événementielle"}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
             <TextField
               autoFocus
               margin="dense"
@@ -60,7 +54,6 @@ class AddDateDialog extends React.Component {
                 this.splitDate(event.target.value)
               }}
             />
-            </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.addDate()} color="primary">

@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { openAddContactDialog, addContactToDate } from '../Actions';
 import {  FormControlLabel, FormGroup, Checkbox, withStyles, FormLabel, FormControl } from '@material-ui/core';
@@ -33,10 +32,6 @@ class AddContactDialog extends React.Component {
     addContactIntoState(id){
         this.setState({id: false})
     }
-
-    handleClickOpen = () => {
-        this.setState({ open: this.props.openDialog });
-    };
 
     handleChange = (id, event, checked) => {
         this.setState({ 
@@ -68,7 +63,6 @@ class AddContactDialog extends React.Component {
           <DialogTitle id="alert-dialog-title">{"Ajouter un contact à cette date"}</DialogTitle>
           <Divider />
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
                 <FormControl component="fieldset" className={classes.formControl}>
                     <FormLabel component="legend">Liste de vos contacts</FormLabel>
                     <FormGroup>
@@ -78,9 +72,8 @@ class AddContactDialog extends React.Component {
                                 key={index}
                                 control={
                                     <Checkbox
-                                    checked={this.state[contact.id]}
                                     onChange={(event, checked) => this.handleChange(contact.id, event, checked)}
-                                    value={contact}
+                                    value={this.state[contact.id]+''}
                                     />
                                 }
                                 label={contact.name + " " + contact.surname}
@@ -89,7 +82,6 @@ class AddContactDialog extends React.Component {
                         )}
                     </FormGroup>
                 </FormControl>
-            </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.addContactToDate()} color="primary">

@@ -21,16 +21,8 @@ class InfoEventDialog extends React.Component {
         this.props.dispatch(requestContactGifts(this.props.idDate, this.props.contact.id))
     }
 
-    handleChangeMultipleLine = name => event => {
-        this.setState({ [name]: event.target.value });
-      };
-
     handleChange = (event, value) => {
         this.setState({ value });
-    };
-
-    handleClickOpen = () => {
-        this.setState({ open: this.props.openDialog });
     };
 
     handleClose = () => {

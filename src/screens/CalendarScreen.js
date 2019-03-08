@@ -24,6 +24,15 @@ class CalendarScreen extends Component{
         budget: 0,
         description: "",
         openScrollTabs: false,
+        value: null,
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.dates !== this.props.dates){
+            if(this.state.value !== null) {
+                this.requestDateEvent(this.state.value)
+            }
+        }
     }
     
     componentDidMount(){
@@ -70,6 +79,7 @@ class CalendarScreen extends Component{
             giftsDateEvent: event.gifts,
             budget: event.budget === null || event.budget === undefined ? 0 : event.budget,
             description: event.description === null || event.description === undefined ? "Aucune description.." : event.description,
+            value: day
         })
     }
     
@@ -113,8 +123,7 @@ class CalendarScreen extends Component{
                                                         idDate={this.state.idDate}
                                                     />: null}
                 <FabButton 
-                    fonct={openAddDateDialog} 
-                    class={this.state.openScroll === false ? classes.fabMoveUp : classes.fabMoveDown}
+                    fonct={openAddDateDialog}
                 />
             </>
         );
@@ -151,20 +160,6 @@ const styles = theme => ({
         padding: "2%",
         margin: "auto"
     },
-    fabMoveUp: {
-        transform: 'translate3d(0, -46px, 0)',
-        transition: theme.transitions.create('transform', {
-          duration: theme.transitions.duration.enteringScreen,
-          easing: theme.transitions.easing.easeOut,
-        }),
-      },
-    fabMoveDown: {
-        transform: 'translate3d(0, 0, 0)',
-        transition: theme.transitions.create('transform', {
-          duration: theme.transitions.duration.leavingScreen,
-          easing: theme.transitions.easing.sharp,
-        }),
-      },
 })
 
 export default withStyles(styles)(connect(mapStateToProps)(CalendarScreen));

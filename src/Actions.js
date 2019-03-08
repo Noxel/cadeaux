@@ -222,15 +222,6 @@ export const loadContacts = () => async (dispatch, state) => {
     dispatch({type: WAIT, wait: false});
 }
 
-export const openAddDateDialog = reverse => async dispatch => {
-    try {
-        dispatch({type: OPEN_ADD_DATE_DIALOG, payload: reverse})
-    } catch (e) {
-        console.log(e)
-    }
-};
-
-
 export const loadContact = (id, noModal) => async (dispatch, state) => {
     dispatch({type: WAIT, wait: true});
     try{
@@ -449,7 +440,7 @@ export const delDate = (query) => async (dispatch, state) => {
     }
 }
 
-export const modalAddContact = (bool) => dispatch => {dispatch({ type: MODAL_ADDCONTACT, modal: bool})}
+
 
 export const openAddDateDialog = reverse => async dispatch => {dispatch({type: OPEN_ADD_DATE_DIALOG, payload: reverse})};
 export const openDelDateDialog = reverse => async dispatch => {dispatch({type: OPEN_DEL_DATE_DIALOG, payload: reverse})};

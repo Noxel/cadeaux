@@ -17,16 +17,8 @@ class InfoDateDialog extends React.Component {
         desc: this.props.description
     }
 
-    handleChangeMultipleLine = name => event => {
-        this.setState({ [name]: event.target.value });
-      };
-
     handleChange = (event, value) => {
         this.setState({ value });
-    };
-
-    handleClickOpen = () => {
-        this.setState({ open: this.props.openDialog });
     };
 
     handleClose = () => {

@@ -10,10 +10,6 @@ import { openDelGiftDialog, delGift } from '../Actions';
 
 class DelGiftDialog extends React.Component {
 
-    handleClickOpen = () => {
-        this.setState({ open: this.props.openDialog });
-    };
-
     handleClose = () => {
         this.props.dispatch(openDelGiftDialog(false))
     };
@@ -21,7 +17,7 @@ class DelGiftDialog extends React.Component {
     delDate = () => {
       console.log("Props")
       console.log(this.props.idGift)
-      let res = this.props.idGift === null || this.props.idGift === undefined ? null : this.props.dispatch(delGift(this.props.idGift))
+      if(!(this.props.idGift === null || this.props.idGift === undefined))this.props.dispatch(delGift(this.props.idGift))
       this.props.dispatch(openDelGiftDialog(false))
     }
 

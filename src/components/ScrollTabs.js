@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Gift from '@material-ui/icons/CardGiftcard';
@@ -31,14 +30,13 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   tabs: {
-    margin: "0 auto"
+    margin: "auto"
   },
 });
 
 class ScrollTabs extends React.Component {
   state = {
     value: 0,
-    maxValue: this.props.contacts.length - 1,
   };
 
   handleChange = (event, value) => {
@@ -51,7 +49,6 @@ class ScrollTabs extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="default">
           <Tabs
             classes={{root: classes.tabs}}
             value={value}
@@ -72,7 +69,6 @@ class ScrollTabs extends React.Component {
             <Tab label="Info" icon={<Info />} onClick={() => this.props.dispatch(openInfoDateDialog(true))}/>
             <Tab label="Supprimer" icon={<Delete />} onClick={() => this.props.dispatch(openDelDateDialog(true))}/>
           </Tabs>
-        </AppBar>
       </div>
     );
   }

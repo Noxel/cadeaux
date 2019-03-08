@@ -10,16 +10,12 @@ import { openDelDateDialog, delDate } from '../Actions';
 
 class DelDateDialog extends React.Component {
 
-    handleClickOpen = () => {
-        this.setState({ open: this.props.openDialog });
-    };
-
     handleClose = () => {
         this.props.dispatch(openDelDateDialog(false))
     };
 
     delDate = () => {
-        let res = this.props.date === -1 ? null : this.props.dispatch(delDate(this.props.date))
+        if(!(this.props.date === -1))this.props.dispatch(delDate(this.props.date))
         this.props.dispatch(openDelDateDialog(false))
     }
 
