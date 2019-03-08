@@ -9,7 +9,7 @@ class FabButton extends Component{
         const {classes} = this.props
         return(
             <>
-                <Fab className={classes.fab} color="secondary" onClick={() => this.props.dispatch(this.props.fonct(true))}>
+                <Fab className={[classes.fab, this.props.class]} color="secondary" onClick={() => this.props.dispatch(this.props.fonct(true))}>
                     <AddIcon/>
                 </Fab>
             </>
@@ -19,7 +19,7 @@ class FabButton extends Component{
 
 const styles = theme => ({
     fab: {
-        position: 'absolute',
+        position: 'fixed',
         bottom: theme.spacing.unit * 2,
         right: theme.spacing.unit * 2,
     }
