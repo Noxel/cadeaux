@@ -6,20 +6,26 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { openDialog } from '../Actions';
+import { openDelGiftDialog, delGift } from '../Actions';
 
-class CalendarDialog extends React.Component {
+class DelGiftDialog extends React.Component {
 
     handleClickOpen = () => {
         this.setState({ open: this.props.openDialog });
     };
 
     handleClose = () => {
-        this.props.dispatch(openDialog(false))
+        this.props.dispatch(openDelGiftDialog(false))
     };
 
+    delDate = () => {
+      console.log("Props")
+      console.log(this.props.idGift)
+      let res = this.props.idGift === null || this.props.idGift === undefined ? null : this.props.dispatch(delGift(this.props.idGift))
+      this.props.dispatch(openDelGiftDialog(false))
+    }
+
   render() {
-    const date = new Date(this.props.date)
     return (
       <div>
         <Dialog
@@ -28,16 +34,18 @@ class CalendarDialog extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Liste des cadeaux du "+date.toLocaleDateString()}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Supprimer le cadeau"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Budget: {this.props.budget}€
-              {this.props.description}
+                Voulez-vous supprimer ce cadeau ?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
+            <Button onClick={() => this.delDate()} color="primary">
+              Supprimer
+            </Button>
             <Button onClick={this.handleClose} color="primary">
-              Fermer
+              Annuler
             </Button>
           </DialogActions>
         </Dialog>
@@ -47,7 +55,7 @@ class CalendarDialog extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return ({openDialog: state.openDialog})
+    return ({openDialog: state.openDelGiftDialog})
 }
 
-export default connect(mapStateToProps)(CalendarDialog);
+export default connect(mapStateToProps)(DelGiftDialog);

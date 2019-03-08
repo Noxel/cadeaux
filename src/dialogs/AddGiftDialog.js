@@ -6,13 +6,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { openAddDateDialog, addDate } from '../Actions';
+import { openAddGiftDialog, addGift } from '../Actions';
 import { TextField } from '@material-ui/core';
+import { Divider } from '@material-ui/core/es';
 
-class AddDateDialog extends React.Component {
+class AddGiftDialog extends React.Component {
 
     state={
-      sendDate: null
+        name: null
     }
 
     handleClickOpen = () => {
@@ -20,19 +21,18 @@ class AddDateDialog extends React.Component {
     };
 
     handleClose = () => {
-        this.props.dispatch(openAddDateDialog(false))
+        this.props.dispatch(openAddGiftDialog(false))
     };
 
-    addDate = () => {  
-      let res = this.state.sendDate !== null ? this.props.dispatch(addDate(this.state.sendDate)) : null
-      this.props.dispatch(openAddDateDialog(false))
+    addGift = () => {  
+      let res = this.state.name !== null ? this.props.dispatch(addGift(this.state.name)) : null
+      this.props.dispatch(openAddGiftDialog(false))
 
     }
 
-    splitDate = (date) => {
-      let sendDate = new Date(date).toISOString()
-      this.setState({sendDate: sendDate})
-    }
+    changeName = (name) => {
+        this.setState({name: name})
+    } 
 
   render() {
     return (
@@ -43,27 +43,26 @@ class AddDateDialog extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Ajouter une date événementielle"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Ajouter un cadeau à offrir"}</DialogTitle>
+          <Divider/>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
             <TextField
               autoFocus
               margin="dense"
-              id="date"
-              label="Date"
-              type="date"
+              id="name"
+              label="Nom"
+              type="string"
               InputLabelProps={{
                 shrink: true,
               }}
               fullWidth
-              onChange={(event) => {
-                this.splitDate(event.target.value)
-              }}
+              onChange={(event) => this.changeName(event.target.value)}
             />
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.addDate()} color="primary">
+            <Button onClick={() => this.addGift()} color="primary">
               Ajouter
             </Button>
             <Button onClick={this.handleClose} color="primary">
@@ -77,7 +76,7 @@ class AddDateDialog extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return ({openDialog: state.openAddDateDialog})
+    return ({openDialog: state.openAddGiftDialog})
 }
 
-export default connect(mapStateToProps)(AddDateDialog);
+export default connect(mapStateToProps)(AddGiftDialog);

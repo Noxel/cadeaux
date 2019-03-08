@@ -6,10 +6,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { openAddDateDialog, addDate } from '../Actions';
+import { openAddDateDialog, addDate, openUpdateGiftDialog } from '../Actions';
 import { TextField } from '@material-ui/core';
 
-class AddDateDialog extends React.Component {
+class UpdateGiftDialog extends React.Component {
 
     state={
       sendDate: null
@@ -20,12 +20,12 @@ class AddDateDialog extends React.Component {
     };
 
     handleClose = () => {
-        this.props.dispatch(openAddDateDialog(false))
+        this.props.dispatch(openUpdateGiftDialog(false))
     };
 
     addDate = () => {  
       let res = this.state.sendDate !== null ? this.props.dispatch(addDate(this.state.sendDate)) : null
-      this.props.dispatch(openAddDateDialog(false))
+      this.props.dispatch(openUpdateGiftDialog(false))
 
     }
 
@@ -77,7 +77,7 @@ class AddDateDialog extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return ({openDialog: state.openAddDateDialog})
+    return ({openDialog: state.openUpdateGiftDialog})
 }
 
-export default connect(mapStateToProps)(AddDateDialog);
+export default connect(mapStateToProps)(UpdateGiftDialog);
