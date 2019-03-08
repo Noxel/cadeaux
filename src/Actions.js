@@ -11,8 +11,10 @@ export const OPEN_ADD_DATE_DIALOG = "OPEN_ADD_DATE_DIALOG";
 export const LOAD_CONTACTS = 'LOAD_CONTACTS';
 export const MODAL_CONTACT = 'MODAL_CONTACT';
 export const MODAL_ADDCONTACT = 'MODAL_ADDCONTACT';
+export const MODAL_UPDATECONTACT = 'MODAL_UPDATECONTACT';
 export const LOAD_CONTACT = 'LOAD_CONTACT';
 export const ADD_CONTACT = 'ADD_CONTACT';
+export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 export const DEL_CONTACT = 'DEL_CONTACT';
 export const ADD_DATE = 'ADD_DATE';
 export const DEL_DATE = 'DEL_DATE';
@@ -30,9 +32,12 @@ export const OPEN_ADD_GIFT_DIALOG = "OPEN_ADD_GIFT_DIALOG";
 export const OPEN_UPDATE_GIFT_DIALOG = "OPEN_UPDATE_GIFT_DIALOG";
 export const OPEN_DEL_GIFT_DIALOG = "OPEN_DEL_GIFT_DIALOG"
 export const ADD_GIFT = 'ADD_GIFT';
-
+export const MODAL_LINKCONTACT = 'MODAL_LINKCONTACT';
+export const DEL_REQUEST ='DEL_REQUEST';
+export const WAIT = 'WAIT';
 
 export const requestLogin = (login, password) => async dispatch => {
+    dispatch({type: WAIT, wait: true});
     try {
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -45,7 +50,7 @@ export const requestLogin = (login, password) => async dispatch => {
         const json = await res.json();
         const token = decodeJWT(json.data.login.token);
         const username = json.data.login.user.username;
-
+        localStorage.setItem('jwt', JSON.stringify(token));
         dispatch({
             type: LOGIN_SUCCESS,
             token: token,
@@ -54,9 +59,11 @@ export const requestLogin = (login, password) => async dispatch => {
     } catch (e) {
 
     }
+    dispatch({type: WAIT, wait: false});
 };
 
 export const requestSignup = (login, password, name, surname, mail) => async dispatch => {
+    dispatch({type: WAIT, wait: true});
     try {
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -78,6 +85,7 @@ export const requestSignup = (login, password, name, surname, mail) => async dis
     } catch (e) {
 
     }
+    dispatch({type: WAIT, wait: false});
 };
 
 export const requestResetPassword = (username) => async dispatch => {
@@ -121,6 +129,7 @@ export const openDialog = reverse => async dispatch => {
 };
 
 export const loadUser = () => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -128,7 +137,7 @@ export const loadUser = () => async (dispatch, state) => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'query{ user{username mail name surname  } }'})
+                body: JSON.stringify({query: 'query{ user{username mail name surname request{id user{username} }   } }'})
             }
         );
         const json = await res.json();
@@ -140,10 +149,11 @@ export const loadUser = () => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
 export const saveUser = (query) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -163,7 +173,7 @@ export const saveUser = (query) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
 export const requestDates = () => async (dispatch, state) => {
@@ -189,6 +199,7 @@ export const requestDates = () => async (dispatch, state) => {
 }
 
 export const loadContacts = () => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -204,39 +215,61 @@ export const loadContacts = () => async (dispatch, state) => {
             type: LOAD_CONTACTS,
             contacts: json.data.contacts,
         });
+
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
-export const loadContact = (id) => async (dispatch, state) => {
+export const openAddDateDialog = reverse => async dispatch => {
+    try {
+        dispatch({type: OPEN_ADD_DATE_DIALOG, payload: reverse})
+    } catch (e) {
+        console.log(e)
+    }
+};
+
+
+export const loadContact = (id, noModal) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
-        const res = await fetch(
-            'https://www.nokxs.com/api/',
-            {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'query{ contact(id:"'+id+'"){name surname birthday{date} link{username} dates{id date} gifts{id name}}}'})
-            }
-        );
-        const json = await res.json();
-        dispatch({
-            type: LOAD_CONTACT,
-            contact: json.data.contact,
-        });
-        dispatch({
-            type: MODAL_CONTACT,
-            modal: true
-        })
+        console.log(id,state().contact.id )
+        if(state().contact.id !== id) {
+            const res = await fetch(
+                'https://www.nokxs.com/api/',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + state().token.rawToken
+                    },
+                    body: JSON.stringify({query: 'query{ contact(id:"' + id + '"){id name surname birthday{date} link{username} dates{id date} gifts{id name}}}'})
+                }
+            );
+
+            const json = await res.json();
+            dispatch({
+                type: LOAD_CONTACT,
+                contact: json.data.contact,
+            });
+        }
+        if(!noModal) dispatch({
+                        type: MODAL_CONTACT,
+                        modal: true
+                    })
+        else dispatch({
+                type: MODAL_UPDATECONTACT,
+                modal: true
+            })
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 
 export const delContact = (id) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -252,9 +285,10 @@ export const delContact = (id) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
 export const addContact = (query) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -271,10 +305,11 @@ export const addContact = (query) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-
+    dispatch({type: WAIT, wait: false});
 }
-/*
+
 export const updateContact = (query) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -282,21 +317,106 @@ export const updateContact = (query) => async (dispatch, state) => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'mutation{ updateContact('+query+'){}'})
+                body: JSON.stringify({query: 'mutation{ updateContact('+query+'){id name surname birthday{date}}}'})
             }
         );
         const json = await res.json();
+        dispatch({ type: UPDATE_CONTACT, contact: json.data.updateContact});
+        dispatch({ type: MODAL_UPDATECONTACT, modal: false})
+    } catch(e) {
+        console.log(e)
+    }
+    dispatch({type: WAIT, wait: false});
+}
 
+export const modalAddContact = (bool) => dispatch => {dispatch({ type: MODAL_ADDCONTACT, modal: bool})}
+
+export const createRequest = (query) => async (dispatch, state) => {
+    try{
+        await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{ createRequest('+query+')}'})
+            }
+        );
+        dispatch({ type: MODAL_LINKCONTACT, modal: false})
+    } catch(e) {
+        console.log(e)
+    }
+    dispatch({type: WAIT, wait: false});
+}
+
+export const loadRequest = () => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'query{ user{username request{id user{username} }  } }'})
+            }
+        );
+        const json = await res.json();
+        dispatch({
+            type: LOAD_USER,
+            user :  json.data.user
+        });
     } catch(e) {
         console.log(e)
     }
 
-}*/
+}
 
+
+
+export const accepteRequest = (id) => async (dispatch, state) => {
+    try{
+        await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                        body: JSON.stringify({query: 'mutation{accepteRequest(id:"'+id+'")  }'})
+            }
+        );
+        dispatch({
+            type: DEL_REQUEST,
+            id :  id
+        });
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+export const deleteRequest = (id) => async (dispatch, state) => {
+    try{
+        await fetch(
+             'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                        body: JSON.stringify({query: 'mutation{deleteRequest(id:"'+id+'")  }'})
+            }
+        );
+        dispatch({
+            type: DEL_REQUEST,
+            id :  id
+        });
+    } catch(e) {
+        console.log(e)
+    }
+}
+                  
 export const addDate = (query) => async (dispatch, state) => {
     try{
         const res = await fetch(
-            'https://www.nokxs.com/api/',
+              'https://www.nokxs.com/api/',
             {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',

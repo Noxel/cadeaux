@@ -42,7 +42,7 @@ const theme = createMuiTheme({
     typography: { useNextVariants: true },
 });
 
-class modalAddContact extends Component {
+class ModalAddContact extends Component {
 
 
     handleCloseModal = () => {
@@ -122,10 +122,10 @@ class modalAddContact extends Component {
                 <Divider variant="fullWidth" />
                 <DialogActions>
                     <Button onClick={()=>{this.submit()}} color="secondary" autoFocus>
-                        Save
+                        Accepter
                     </Button>
                     <Button onClick={this.handleCloseModal} color="primary" autoFocus>
-                        Close
+                        Annuler
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -138,4 +138,4 @@ const mapStateToProps = state => ({
     modal : state.modalAddContact
 });
 
-export default  withMobileDialog()(withStyles(styles, { withTheme: true })(connect(mapStateToProps)(modalAddContact)));
+export default  withMobileDialog()(withStyles(styles, { withTheme: true })(connect(mapStateToProps)(ModalAddContact)));

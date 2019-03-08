@@ -13,14 +13,59 @@ import Registration from "../forms/Registration";
 import Login from "../forms/Login";
 import {connect} from "react-redux";
 import ResetPassword from "../forms/ResetPassword";
+import Badge from "@material-ui/core/Badge";
+import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
+import MailIcon from '@material-ui/icons/Mail';
+import {IconButton} from "@material-ui/core";
+import withStyles from "@material-ui/core/es/styles/withStyles";
+import Popover from "@material-ui/core/Popover";
+import List from "@material-ui/core/List";
+import Grow from "@material-ui/core/Grow";
+import ListItem from "@material-ui/core/ListItem";
+import Divider from "@material-ui/core/Divider";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
+import {accepteRequest, deleteRequest} from "../Actions";
+
+
+const styles = theme => ({
+    typography: {
+        margin: theme.spacing.unit * 2,
+    },
+    root: {
+        backgroundColor: theme.palette.background.paper,
+    },
+});
 
 class HomeScreen extends Component{
     componentDidMount(){
         return this.props.token === null ? this.props.history.push('/login') : null;
     }
 
+    state = {
+        anchorEl: null,
+    };
+
+    handleClick = event => {
+        if(this.props.user.request.length > 0)
+        this.setState({
+            anchorEl: event.currentTarget,
+        });
+    };
+
+
+    handleClose = () => {
+        this.setState({
+            anchorEl: null,
+        });
+    };
+
     render(){
-        console.log(this.props.token)
+        const { classes } = this.props;
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
+
         return(
             <>
                 <AppBar position="static" color="primary">
@@ -29,6 +74,58 @@ class HomeScreen extends Component{
                         <Typography variant="h6" color="inherit">
                             App Cadeaux
                         </Typography>
+                        <div style={{flexGrow: 1}} />
+                        {this.props.token ?
+                            <>
+                                <IconButton color="inherit" onClick={this.handleClick} >
+                                    <Badge badgeContent={this.props.user.request.length} color="secondary">
+                                        <MailIcon/>
+                                    </Badge>
+                                </IconButton>
+                                <Popover
+                                    id="requestPopper"
+                                    open={open}
+                                    anchorEl={anchorEl}
+                                    onClose={this.handleClose}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'center',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'center',
+                                    }}
+                                >
+                                    <Typography component="div" className={classes.typography}>
+                                        <List className={classes.root}>
+                                            {this.props.user.request.map((item,index)=> (
+                                                <Grow in={true} timeout={300*index} key={index} >
+                                                    <>
+                                                    <ListItem alignItems="flex-start">
+                                                        <ListItemText primary={this.props.user.request[index].user.username+" vous veut dans ces contacts"}/>
+                                                        <ListItemIcon  onClick={()=>{
+                                                                this.handleClose()
+                                                                this.props.dispatch(accepteRequest(item.id))}
+                                                            } aria-label="Accepter" >
+                                                                <DoneIcon color="secondary"/>
+                                                        </ListItemIcon>
+                                                        <ListItemIcon  onClick={() => {
+                                                                this.handleClose()
+                                                                this.props.dispatch(deleteRequest(item.id))}
+                                                            } aria-label="Refuser">
+                                                                <CloseIcon color="primary"/>
+                                                        </ListItemIcon>
+                                                    </ListItem>
+                                                    <Divider variant="fullWidth"/>
+                                                    </>
+                                                </Grow>
+                                            ))}
+                                        </List>
+                                    </Typography>
+                                </Popover>
+                            </>
+                            : <></>
+                        }
                     </Toolbar>
                 </AppBar>
                 <Route exact path="/home" render={() => <Home/>}/>
@@ -55,4 +152,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default withRouter(connect(mapStateToProps)(HomeScreen));
+export default withRouter( withStyles(styles)(connect(mapStateToProps)(HomeScreen)));

@@ -8,19 +8,49 @@ import {
     SIGNUP_SUCCESS,
     LOAD_CONTACTS,
     LOAD_CONTACT,
-    REQUEST_DATES, OPEN_ADD_DATE_DIALOG,
-    MODAL_CONTACT, MODAL_ADDCONTACT, ADD_CONTACT, DEL_CONTACT, ADD_DATE, OPEN_DEL_DATE_DIALOG, DEL_DATE, OPEN_INFO_DATE_DIALOG, SEND_INFOS, OPEN_ADD_CONTACT_DIALOG, ADD_CONTACT_TO_DATE, OPEN_INFO_EVENT_DIALOG, OPEN_ADD_GIFT_DIALOG, LOAD_GIFTS, LOAD_GIFT, DEL_GIFT, OPEN_UPDATE_GIFT_DIALOG, OPEN_DEL_GIFT_DIALOG, ADD_GIFT,
+    REQUEST_DATES, 
+    OPEN_ADD_DATE_DIALOG,
+    MODAL_CONTACT, 
+    MODAL_ADDCONTACT, 
+    ADD_CONTACT, 
+    DEL_CONTACT, 
+    ADD_DATE, 
+    OPEN_DEL_DATE_DIALOG, 
+    DEL_DATE, 
+    OPEN_INFO_DATE_DIALOG, 
+    SEND_INFOS, 
+    OPEN_ADD_CONTACT_DIALOG, 
+    ADD_CONTACT_TO_DATE, 
+    OPEN_INFO_EVENT_DIALOG, 
+    OPEN_ADD_GIFT_DIALOG, 
+    LOAD_GIFTS, 
+    LOAD_GIFT, 
+    DEL_GIFT, 
+    OPEN_UPDATE_GIFT_DIALOG, 
+    OPEN_DEL_GIFT_DIALOG, 
+    ADD_GIFT, 
+    MODAL_UPDATECONTACT, 
+    UPDATE_CONTACT,
+    MODAL_LINKCONTACT, 
+    DEL_REQUEST, 
+    WAIT
+
 } from "./Actions";
 
 const initialState = {
     token: null,
     username: '',
-    user: {},
+    user: {
+        request: [
+
+        ]
+    },
     dates: [],
     error: '',
     message: '',
     contacts: [],
-    contact: { dates: [],
+    contact: {  birthday: {},
+                dates: [],
                 gifts: [],},
     openDialog: false,
     openAddDateDialog: false,
@@ -38,6 +68,11 @@ const initialState = {
     currentContact: {},
     gifts: [],
     gift: {},
+    modalUpdateContact: false,
+    modalLinkContact: false,
+    idLinkContact:'',
+    wait: false,
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -95,6 +130,8 @@ const reducer = (state = initialState, action) => {
             return  {...state, modalContact: action.modal};
         case MODAL_ADDCONTACT:
             return {...state, modalAddContact: action.modal};
+        case MODAL_UPDATECONTACT:
+            return {...state, modalUpdateContact: action.modal};
         case ADD_CONTACT :
             return {...state, contacts: [...state.contacts, action.contact]};
         case DEL_CONTACT:
@@ -142,6 +179,20 @@ const reducer = (state = initialState, action) => {
             return {...state, gifts: state.gifts.filter((item) => (item.id !== action.payload))}
         case ADD_GIFT:
             return {...state, gifts: [...state.gifts, action.payload]}
+        case UPDATE_CONTACT:
+            return {...state, contacts: state.contacts.map((item)=>{ if( item.id === action.contact.id ){
+                                                                                    item.name = action.contact.name;
+                                                                                    item.surname = action.contact.surname;
+                                                                                    item.birthday = action.contact.birthday;
+                                                                                }
+                                                                                return item
+                                                                            })};
+        case MODAL_LINKCONTACT:
+            return {...state, modalLinkContact: action.modal, idLinkContact: action.id};
+        case DEL_REQUEST:
+            return {...state, user: {...state.user, request: state.user.request.filter(item=>(item.id !== action.id))}};
+        case WAIT:
+            return {...state, wait: action.wait};
         default:
             return state
     }
