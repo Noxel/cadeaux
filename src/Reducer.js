@@ -33,7 +33,8 @@ import {
     UPDATE_CONTACT,
     MODAL_LINKCONTACT, 
     DEL_REQUEST, 
-    WAIT
+    WAIT,
+    UPDATE_GIFT
 
 } from "./Actions";
 
@@ -193,6 +194,13 @@ const reducer = (state = initialState, action) => {
             return {...state, user: {...state.user, request: state.user.request.filter(item=>(item.id !== action.id))}};
         case WAIT:
             return {...state, wait: action.wait};
+        case UPDATE_GIFT:
+            return {
+                ...state,
+                gifts: state.gifts.map(gift => (
+                    gift.id === action.payload.id ? action.payload : gift
+                ))
+            }
         default:
             return state
     }

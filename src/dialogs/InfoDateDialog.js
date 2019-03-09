@@ -83,15 +83,17 @@ class InfoDateDialog extends React.Component {
                             margin="normal"
                             onChange={(event) => this.onChangeDesc(event.target.value)}
                             required
+                            fullWidth
                         />
                         <TextField
-                            autoFocus
                             id="standard-multiline-flexible"
                             label="Budget"
                             margin="normal"
+                            className={classes.textField}
                             defaultValue={this.props.budget}
                             onChange={(event) => this.onChangeBudget(event.target.value)}
                             required
+                            fullWidth
                         />
                         </div>
                     </Typography>
@@ -124,7 +126,6 @@ const styles = theme => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 200,
     },
 });
 

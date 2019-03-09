@@ -26,7 +26,7 @@ export const SEND_INFOS = "SEND_INFOS";
 export const ADD_CONTACT_TO_DATE = 'ADD_CONTACT_TO_DATE';
 export const OPEN_INFO_EVENT_DIALOG = "OPEN_INFO_EVENT_DIALOG";
 export const LOAD_GIFTS = "LOAD_GIFTS";
-export const LOAD_GIFT = "LOAD_GIFTS";
+export const LOAD_GIFT = "LOAD_GIFT";
 export const DEL_GIFT = "DEL_GIFT";
 export const OPEN_ADD_GIFT_DIALOG = "OPEN_ADD_GIFT_DIALOG";
 export const OPEN_UPDATE_GIFT_DIALOG = "OPEN_UPDATE_GIFT_DIALOG";
@@ -35,6 +35,7 @@ export const ADD_GIFT = 'ADD_GIFT';
 export const MODAL_LINKCONTACT = 'MODAL_LINKCONTACT';
 export const DEL_REQUEST ='DEL_REQUEST';
 export const WAIT = 'WAIT';
+export const UPDATE_GIFT = "UPDATE_GIFT"
 
 export const requestLogin = (login, password) => async dispatch => {
     dispatch({type: WAIT, wait: true});
@@ -455,7 +456,6 @@ export const openDelGiftDialog = reverse => async dispatch => {dispatch({type: O
 
 export const sendInfos = (query) => async (dispatch, state) => {
     try{
-        console.log(query)
         const res = await fetch(
             'https://www.nokxs.com/api/',
             {
@@ -475,8 +475,6 @@ export const sendInfos = (query) => async (dispatch, state) => {
 
 export const addContactToDate = (idDate, idContact) => async (dispatch, state) => {
     try{
-        console.log(idDate)
-        console.log(idContact)
         const res = await fetch(
             'https://www.nokxs.com/api/',
             {
@@ -535,7 +533,7 @@ export const loadGifts = () => async (dispatch, state) => {
     }
 }
 
-export const loadGift = (id) => async (dispatch, state) => {
+export const loadGift = (id, openDialog) => async (dispatch, state) => {
     try{
         const res = await fetch(
             'https://www.nokxs.com/api/',
@@ -551,6 +549,10 @@ export const loadGift = (id) => async (dispatch, state) => {
             type: LOAD_GIFT,
             payload: json.data.gift,
         });
+        dispatch({
+            type: OPEN_UPDATE_GIFT_DIALOG,
+            payload: true
+        })
     } catch(e) {
         console.log(e)
     }
@@ -558,8 +560,6 @@ export const loadGift = (id) => async (dispatch, state) => {
 
 export const delGift = (query) => async (dispatch, state) => {
     try{
-        console.log("query")
-        console.log(query)
         const res = await fetch(
             'https://www.nokxs.com/api/',
             {
@@ -591,6 +591,26 @@ export const addGift = (query) => async (dispatch, state) => {
         const json = await res.json()
         dispatch({ type: ADD_GIFT, payload: json.data.createGift})
     } catch(e) {
+        dispatch({type: ERROR, e})
+    }
+}
+
+export const updateGift = (query) => async (dispatch, state) => {
+    try{
+        console.log(query)
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{ updateGift('+query+'){id name price contact{id name surname} date{id date} }}'})
+            }
+        );
+        const json = await res.json()
+        dispatch({ type: UPDATE_GIFT, payload: json.data.updateGift})
+    } catch(e) {
+        console.log(e)
         dispatch({type: ERROR, e})
     }
 }

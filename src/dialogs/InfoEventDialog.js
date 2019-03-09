@@ -30,12 +30,10 @@ class InfoEventDialog extends React.Component {
     };
 
     sendInfos = () => {
-        console.log("sendinfos")
         this.handleClose();
     }
 
     deleteContact = () => {
-        console.log("deleteContact")
         this.handleClose();
     }
 
