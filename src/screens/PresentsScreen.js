@@ -69,6 +69,29 @@ class PresentsScreen extends Component{
         this.props.dispatch(loadGift(this.state.idGift));
     };
 
+    displayUser(gift){
+        // {gift.date === null ? "" : ", le " + new Date(gift.date.date).toLocaleDateString()}
+        let res = ""
+        if(gift.wishUser !== null){
+            res+= " pour moi même"
+        }
+        else if(gift.contact === null){
+            res+=" à offrir à personne"
+        }   
+        else {
+            if(gift.contact === null){
+                res+=" à offrir à personne"
+            }
+            else {
+                res+= " à offrir à " + gift.contact.surname + " " + gift.contact.name
+                if(gift.date !== null){
+                    res+= ", le " + new Date(gift.date.date).toLocaleDateString()
+                }
+            }
+        }
+        return res;
+    }
+
     render(){
         const { menu } = this.state;
         const open = Boolean(menu);
@@ -92,7 +115,8 @@ class PresentsScreen extends Component{
                                                         || 
                                                     gift.price === undefined ? 
                                                         "0" : 
-                                                    gift.price} €, à offrir à {gift.contact === null ? "Personne" : gift.contact.surname + "" + gift.contact.name} {gift.date === null ? "" : ", le " + new Date(gift.date.date).toLocaleDateString()}
+                                                    gift.price} €,
+                                                    {this.displayUser(gift)} 
                                                 </Typography>
                                             }
                                         />

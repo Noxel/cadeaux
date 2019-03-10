@@ -35,9 +35,9 @@ export const ADD_GIFT = 'ADD_GIFT';
 export const MODAL_LINKCONTACT = 'MODAL_LINKCONTACT';
 export const DEL_REQUEST ='DEL_REQUEST';
 export const WAIT = 'WAIT';
-export const UPDATE_GIFT = "UPDATE_GIFT"
-export const DEL_CONTACT_FROM_DATE = "DEL_CONTACT_FROM_DATE"
-
+export const UPDATE_GIFT = "UPDATE_GIFT";
+export const DEL_CONTACT_FROM_DATE = "DEL_CONTACT_FROM_DATE";
+export const REQUEST_CONTACT_GIFTS = "REQUEST_CONTACT_GIFTS";
 
 export const requestLogin = (login, password) => async dispatch => {
     dispatch({type: WAIT, wait: true});
@@ -507,7 +507,7 @@ export const requestContactGifts = (idDate, idContact) => async (dispatch, state
         );
         const json = await res.json()
         console.log(json.data.gifts)
-        dispatch({ type: LOAD_GIFTS, payload: json.data.gifts})
+        dispatch({ type: REQUEST_CONTACT_GIFTS, payload: json.data.gifts})
     } catch(e) {
         console.log(e)
         dispatch({type: ERROR, e})
@@ -522,7 +522,7 @@ export const loadGifts = () => async (dispatch, state) => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'query { gifts{ id price name date{id date} contact{id name surname}}}'})
+                body: JSON.stringify({query: 'query { gifts{ id price wishUser{id} name date{id date} contact{id name surname}}}'})
             }
         );
         const json = await res.json();
@@ -543,7 +543,7 @@ export const loadGift = (id, openDialog) => async (dispatch, state) => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'query { gift(id:"'+id+'"){ id price name date{id date} contact{id name surname}}}'})
+                body: JSON.stringify({query: 'query { gift(id:"'+id+'"){ id price wishUser{id} name date{id date} contact{id name surname}}}'})
             }
         );
         const json = await res.json();
@@ -587,7 +587,7 @@ export const addGift = (query) => async (dispatch, state) => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'mutation{ createGift(name:"'+query+'"){id price name date{id date} contact{id name surname} }}'})
+                body: JSON.stringify({query: 'mutation{ createGift('+query+'){id price wishUser{id} name date{id date} contact{id name surname} }}'})
             }
         );
         const json = await res.json()
@@ -605,7 +605,7 @@ export const updateGift = (query, idDate, idContact) => async (dispatch, state) 
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'mutation{ updateGift('+query+'){id name price contact{id name surname} date{id date} }}'})
+                body: JSON.stringify({query: 'mutation{ updateGift('+query+'){id name price wishUser{id} contact{id name surname} date{id date} }}'})
             }
         );
         await fetch(
@@ -643,7 +643,7 @@ export const deleteContactFromDate = (idDate, idContact, gifts) => async (dispat
                     method: 'POST',
                     headers: {'Content-Type': 'application/json',
                         'Authorization': 'Bearer '+state().token.rawToken},
-                    body: JSON.stringify({query: 'mutation{ updateGift(id:"'+gift.id+'" idContact:'+null+' idDate:'+null+'){id name price contact{id name surname} date{id date} }}'})
+                    body: JSON.stringify({query: 'mutation{ updateGift(id:"'+gift.id+'" dContact:true dDate:true){id name price contact{id name surname} date{id date} }}'})
                 }
             );
         })

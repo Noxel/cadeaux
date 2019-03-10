@@ -119,7 +119,7 @@ const mapStateToProps = state => {
     return ({
                 openDialog: state.openInfoEventDialog,
                 contact: state.currentContact,
-                gifts: state.gifts,
+                gifts: state.giftsContacts,
             })
 }
 
