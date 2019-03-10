@@ -33,7 +33,10 @@ import {
     UPDATE_CONTACT,
     MODAL_LINKCONTACT, 
     DEL_REQUEST, 
-    WAIT
+    WAIT,
+    UPDATE_GIFT,
+    DEL_CONTACT_FROM_DATE,
+    REQUEST_CONTACT_GIFTS
 
 } from "./Actions";
 
@@ -72,7 +75,7 @@ const initialState = {
     modalLinkContact: false,
     idLinkContact:'',
     wait: false,
-
+    giftsContacts: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -193,6 +196,22 @@ const reducer = (state = initialState, action) => {
             return {...state, user: {...state.user, request: state.user.request.filter(item=>(item.id !== action.id))}};
         case WAIT:
             return {...state, wait: action.wait};
+        case UPDATE_GIFT:
+            return {
+                ...state,
+                gifts: state.gifts.map(gift => (
+                    gift.id === action.payload.id ? action.payload : gift
+                ))
+            };
+        case DEL_CONTACT_FROM_DATE: 
+            return {
+                ...state,
+                dates: state.dates.map(date => {
+                        return {...date, contacts: date.contacts.filter(contact => contact.id !== action.payload)}
+                })
+            }
+        case REQUEST_CONTACT_GIFTS:
+            return {...state, giftsContacts: action.payload}
         default:
             return state
     }

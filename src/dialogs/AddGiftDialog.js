@@ -19,8 +19,12 @@ class AddGiftDialog extends React.Component {
         this.props.dispatch(openAddGiftDialog(false))
     };
 
-    addGift = () => {  
-      if(this.state.name !== null)this.props.dispatch(addGift(this.state.name))
+    addGift = () => {
+      if(this.state.name !== null){
+        let query = 'name:"'+this.state.name+'"';
+        if(this.props.me)query+=' me:'+this.props.me
+        this.props.dispatch(addGift(query))
+      }
       this.props.dispatch(openAddGiftDialog(false))
 
     }
