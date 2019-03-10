@@ -1,0 +1,16 @@
+h1 {
+    text-align: center;
+}
+
+.logo {
+    display: block;
+    width: 8em;
+    height: auto;
+    margin: 0 auto 3em auto;
+}
+
+.texte {
+    width: 80%;
+    margin: 0 auto;
+    text-align: justify;
+}
