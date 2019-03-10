@@ -29,6 +29,7 @@ import Dialog from "@material-ui/core/es/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/es/DialogTitle/DialogTitle";
 import DialogActions from "@material-ui/core/es/DialogActions/DialogActions";
 import Button from "@material-ui/core/Button";
+import WishList from "../components/WishList";
 
 const styles = theme => ({
     root: {
@@ -50,6 +51,7 @@ const styles = theme => ({
         flexDirection: 'column',
     },
 
+
 });
 
 class ContactsScreen extends Component{
@@ -63,6 +65,7 @@ class ContactsScreen extends Component{
         menu : null,
         modal : false,
         confDel: false,
+        wish: false,
         value: 0,
         id: '',
     };
@@ -89,7 +92,7 @@ class ContactsScreen extends Component{
 
                     {this.props.contacts.map((item, index) => {
                         let birthday = item.birthday? new Date(item.birthday.date) : {};
-                        return  <Grow in={true} timeout={400*index<6000?500*index:400}  ><div key={index}>
+                        return  <Grow in={true} timeout={400*index<6000?500*index:400} key={index} ><div>
                             <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
                                     <Avatar className={classes.avatar}>{item.name.charAt(0) + item.surname.charAt(0)}</Avatar>
@@ -129,6 +132,11 @@ class ContactsScreen extends Component{
                                     }}>
                                         Connecter
                                     </MenuItem>
+                                    <MenuItem onClick={() => {
+                                        this.setState({ wish: true });
+                                    }}>
+                                        List de souhait
+                                    </MenuItem>
                                 </Menu>
                             </ListItem>
                             <Divider variant="fullWidth"/>
@@ -142,6 +150,7 @@ class ContactsScreen extends Component{
                 <ModalContact/>
                 <Dialog open={this.state.confDel} disableEnforceFocus >
                     <DialogTitle>{'Voulez-vous supprimer cet élément ? '}</DialogTitle>
+                    <Divider variant="fullWidth"/>
                     <DialogActions>
                         <Button onClick={()=>{
                                                 this.props.dispatch(delContact(this.state.id))
@@ -152,6 +161,17 @@ class ContactsScreen extends Component{
                         </Button>
                         <Button onClick={()=>{this.setState({ confDel: false })}} color="primary" autoFocus>
                             Annuler
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.wish} disableEnforceFocus >
+                    <DialogTitle>{'List de souhait '}</DialogTitle>
+                    <Divider variant="fullWidth"/>
+                    <WishList idContact={this.state.id}/>
+                    <Divider variant="fullWidth"/>
+                    <DialogActions>
+                        <Button onClick={()=>{this.setState({ wish: false })}} color="primary" autoFocus>
+                            Quitter
                         </Button>
                     </DialogActions>
                 </Dialog>

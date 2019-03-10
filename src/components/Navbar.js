@@ -10,6 +10,7 @@ import StarIcon from '@material-ui/icons/Stars';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import UndoIcon from '@material-ui/icons/Undo';
+import CakeIcon from '@material-ui/icons/Cake';
 import {loadRequest, requestLogout} from '../Actions';
 
 class Navbar extends Component{
@@ -51,6 +52,8 @@ class Navbar extends Component{
             case 4 :
                 return <ContactsIcon/>;
             case 5 :
+                return <CakeIcon/>;
+            case 6 :
                 return <UndoIcon/>;
             default:
                 break;
@@ -61,9 +64,9 @@ class Navbar extends Component{
     //Garder le lastItem avec Déconnexion en correspondance, toujours rajouter des items avant la déconnexion !
     render(){
         const { classes } = this.props;
-        const listItems = ['Accueil', 'Mon profil', 'Calendrier', 'Cadeaux', 'Contacts', 'Déconnexion'];
+        const listItems = ['Accueil', 'Mon profil', 'Calendrier', 'Cadeaux', 'Contacts','List de souhait', 'Déconnexion'];
         const lastItem = listItems.length;
-        const linkItems = ['/home', '/profile', '/calendar', '/presents', '/contacts', '/logout'];
+        const linkItems = ['/home', '/profile', '/calendar', '/presents', '/contacts','/listeSouhait', '/logout'];
         return(
             <>
                 <IconButton className={classes.menuButton} onClick={this.toggleDrawer('left', true)} aria-label="menu">

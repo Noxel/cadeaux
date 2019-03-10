@@ -27,6 +27,7 @@ import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
 import {accepteRequest, deleteRequest} from "../Actions";
+import WishList from "../components/WishList";
 
 
 const styles = theme => ({
@@ -137,6 +138,7 @@ class HomeScreen extends Component{
                 <Route exact path="/calendar" render={() => <CalendarScreen/>}/>
                 <Route exact path="/presents" render={() => <PresentsScreen/>}/>
                 <Route exact path="/contacts" render={() => <ContactsScreen/>}/>
+                <Route exact path="/listeSouhait" render={() => <WishList/>}/>
                 <Route exact path="/" render={() =>
                     this.props.token !== null ? <Redirect to="/home"/> : <Redirect to="/login"/>
                 }/>

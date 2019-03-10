@@ -337,7 +337,6 @@ export const createRequest = (query) => async (dispatch, state) => {
     } catch(e) {
         console.log(e)
     }
-    dispatch({type: WAIT, wait: false});
 }
 
 export const loadRequest = () => async (dispatch, state) => {
@@ -593,4 +592,25 @@ export const addGift = (query) => async (dispatch, state) => {
     } catch(e) {
         dispatch({type: ERROR, e})
     }
+}
+export const LOAD_WISH = 'LOAD_WISH';
+export const loadWish = (idContact) => async (dispatch, state) => {
+    dispatch({type: WAIT, wait: true});
+    try{
+        let query = idContact?'(idContact:"'+idContact+'")':''
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'query{ wishs'+query+'{name price}}'})
+            }
+        );
+        const json = await res.json()
+        dispatch({ type: LOAD_WISH, wishs: json.data.wishs})
+    } catch(e) {
+        dispatch({type: ERROR, e})
+    }
+    dispatch({type: WAIT, wait: false});
 }
