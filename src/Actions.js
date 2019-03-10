@@ -36,6 +36,8 @@ export const MODAL_LINKCONTACT = 'MODAL_LINKCONTACT';
 export const DEL_REQUEST ='DEL_REQUEST';
 export const WAIT = 'WAIT';
 export const UPDATE_GIFT = "UPDATE_GIFT"
+export const DEL_CONTACT_FROM_DATE = "DEL_CONTACT_FROM_DATE"
+
 
 export const requestLogin = (login, password) => async dispatch => {
     dispatch({type: WAIT, wait: true});
@@ -500,12 +502,12 @@ export const requestContactGifts = (idDate, idContact) => async (dispatch, state
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+state().token.rawToken},
-                body: JSON.stringify({query: 'query{ gifts(idDate:"'+idDate+'" idContact:"'+idContact+'"){id} }'})
+                body: JSON.stringify({query: 'query{ gifts(idDate:"'+idDate+'" idContact:"'+idContact+'"){id name price} }'})
             }
         );
         const json = await res.json()
         console.log(json.data.gifts)
-        //dispatch({ type: ADD_CONTACT_TO_DATE, payload: json.data.createDateContact, idDate: idDate})
+        dispatch({ type: LOAD_GIFTS, payload: json.data.gifts})
     } catch(e) {
         console.log(e)
         dispatch({type: ERROR, e})
@@ -595,10 +597,9 @@ export const addGift = (query) => async (dispatch, state) => {
     }
 }
 
-export const updateGift = (query) => async (dispatch, state) => {
+export const updateGift = (query, idDate, idContact) => async (dispatch, state) => {
     try{
-        console.log(query)
-        const res = await fetch(
+        const updateGift = await fetch(
             'https://www.nokxs.com/api/',
             {
                 method: 'POST',
@@ -607,8 +608,48 @@ export const updateGift = (query) => async (dispatch, state) => {
                 body: JSON.stringify({query: 'mutation{ updateGift('+query+'){id name price contact{id name surname} date{id date} }}'})
             }
         );
-        const json = await res.json()
-        dispatch({ type: UPDATE_GIFT, payload: json.data.updateGift})
+        await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{ createDateContact(idDate: "'+idDate+'" idContact: "'+idContact+'"){id} }'})
+            }
+        );
+        const jsonGift = await updateGift.json()
+        dispatch({ type: UPDATE_GIFT, payload: jsonGift.data.updateGift})
+    } catch(e) {
+        console.log(e)
+        dispatch({type: ERROR, e})
+    }
+}
+
+export const deleteContactFromDate = (idDate, idContact, gifts) => async (dispatch, state) => {
+    try{
+        const res = await fetch(
+            'https://www.nokxs.com/api/',
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+state().token.rawToken},
+                body: JSON.stringify({query: 'mutation{ deleteDateContact(idDate:"'+idDate+'" idContact:"'+idContact+'"){id name}}'})
+            }
+        );
+        gifts.map(gift => {
+            return fetch(
+                'https://www.nokxs.com/api/',
+                {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json',
+                        'Authorization': 'Bearer '+state().token.rawToken},
+                    body: JSON.stringify({query: 'mutation{ updateGift(id:"'+gift.id+'" idContact:'+null+' idDate:'+null+'){id name price contact{id name surname} date{id date} }}'})
+                }
+            );
+        })
+       
+        const json = await res.json();
+        dispatch({ type: DEL_CONTACT_FROM_DATE, payload: json.data.deleteDateContact.id})
     } catch(e) {
         console.log(e)
         dispatch({type: ERROR, e})

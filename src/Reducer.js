@@ -34,7 +34,8 @@ import {
     MODAL_LINKCONTACT, 
     DEL_REQUEST, 
     WAIT,
-    UPDATE_GIFT
+    UPDATE_GIFT,
+    DEL_CONTACT_FROM_DATE
 
 } from "./Actions";
 
@@ -200,6 +201,13 @@ const reducer = (state = initialState, action) => {
                 gifts: state.gifts.map(gift => (
                     gift.id === action.payload.id ? action.payload : gift
                 ))
+            };
+        case DEL_CONTACT_FROM_DATE: 
+            return {
+                ...state,
+                dates: state.dates.map(date => {
+                        return {...date, contacts: date.contacts.filter(contact => contact.id !== action.payload)}
+                })
             }
         default:
             return state

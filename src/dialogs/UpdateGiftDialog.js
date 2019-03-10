@@ -31,7 +31,7 @@ class UpdateGiftDialog extends React.Component {
         if(this.state.price !== null && this.state.price !== "")query+=' price:'+this.state.price
         if(this.state.dateId !== null && this.state.dateId !== "")query+=' idDate:"'+this.state.dateId+'"'
         if(this.state.contactId !== null && this.state.contactId !== "")query+=' idContact:"'+this.state.contactId+'"'
-        this.props.dispatch(updateGift(query))
+        this.props.dispatch(updateGift(query, this.state.dateId, this.state.contactId))
       }
       this.props.dispatch(openUpdateGiftDialog(false))
 
@@ -50,6 +50,7 @@ class UpdateGiftDialog extends React.Component {
     };
 
     handleChangeDate = event => {
+      console.log(event.target.value)
       this.setState({ dateId: event.target.value });
     };
 
@@ -93,7 +94,7 @@ class UpdateGiftDialog extends React.Component {
               <FormControl>
                 <InputLabel htmlFor="contact-simple">Contact</InputLabel>
                 <Select
-                  value={this.state.contactId}
+                  value={this.state.contact === null ? "" : this.state.contact.id}
                   fullWidth
                   onChange={this.handleChangeContact}
                   inputProps={{
@@ -112,7 +113,7 @@ class UpdateGiftDialog extends React.Component {
               <FormControl>
                 <InputLabel htmlFor="date-simple">Date événementielle</InputLabel>
                 <Select
-                  value={this.state.dateId}
+                  value={this.state.date === null ? "" : this.state.date.id}
                   fullWidth
                   onChange={this.handleChangeDate}
                   inputProps={{
