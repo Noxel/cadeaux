@@ -15,8 +15,6 @@ class DelGiftDialog extends React.Component {
     };
 
     delDate = () => {
-      console.log("Props")
-      console.log(this.props.idGift)
       if(!(this.props.idGift === null || this.props.idGift === undefined))this.props.dispatch(delGift(this.props.idGift))
       this.props.dispatch(openDelGiftDialog(false))
     }
