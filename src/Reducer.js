@@ -8,35 +8,36 @@ import {
     SIGNUP_SUCCESS,
     LOAD_CONTACTS,
     LOAD_CONTACT,
-    REQUEST_DATES, 
+    REQUEST_DATES,
     OPEN_ADD_DATE_DIALOG,
-    MODAL_CONTACT, 
-    MODAL_ADDCONTACT, 
-    ADD_CONTACT, 
-    DEL_CONTACT, 
-    ADD_DATE, 
-    OPEN_DEL_DATE_DIALOG, 
-    DEL_DATE, 
-    OPEN_INFO_DATE_DIALOG, 
-    SEND_INFOS, 
-    OPEN_ADD_CONTACT_DIALOG, 
-    ADD_CONTACT_TO_DATE, 
-    OPEN_INFO_EVENT_DIALOG, 
-    OPEN_ADD_GIFT_DIALOG, 
-    LOAD_GIFTS, 
-    LOAD_GIFT, 
-    DEL_GIFT, 
-    OPEN_UPDATE_GIFT_DIALOG, 
-    OPEN_DEL_GIFT_DIALOG, 
-    ADD_GIFT, 
-    MODAL_UPDATECONTACT, 
+    MODAL_CONTACT,
+    MODAL_ADDCONTACT,
+    ADD_CONTACT,
+    DEL_CONTACT,
+    ADD_DATE,
+    OPEN_DEL_DATE_DIALOG,
+    DEL_DATE,
+    OPEN_INFO_DATE_DIALOG,
+    SEND_INFOS,
+    OPEN_ADD_CONTACT_DIALOG,
+    ADD_CONTACT_TO_DATE,
+    OPEN_INFO_EVENT_DIALOG,
+    OPEN_ADD_GIFT_DIALOG,
+    LOAD_GIFTS,
+    LOAD_GIFT,
+    DEL_GIFT,
+    OPEN_UPDATE_GIFT_DIALOG,
+    OPEN_DEL_GIFT_DIALOG,
+    ADD_GIFT,
+    MODAL_UPDATECONTACT,
     UPDATE_CONTACT,
     MODAL_LINKCONTACT, 
     DEL_REQUEST, 
     WAIT,
     UPDATE_GIFT,
     DEL_CONTACT_FROM_DATE,
-    REQUEST_CONTACT_GIFTS
+    REQUEST_CONTACT_GIFTS, 
+    LOAD_WISH
 
 } from "./Actions";
 
@@ -75,6 +76,7 @@ const initialState = {
     modalLinkContact: false,
     idLinkContact:'',
     wait: false,
+    wishs: [],
     giftsContacts: [],
 };
 
@@ -196,6 +198,8 @@ const reducer = (state = initialState, action) => {
             return {...state, user: {...state.user, request: state.user.request.filter(item=>(item.id !== action.id))}};
         case WAIT:
             return {...state, wait: action.wait};
+        case LOAD_WISH:
+            return {...state, wishs: action.wishs};
         case UPDATE_GIFT:
             return {
                 ...state,
