@@ -3,6 +3,11 @@ Réalisé par Clément ARESCALDINO, Philippe PRADELLE et Dimitri DUMONT.
 
 Notre application est une application web et mobile (PWA) réalisé dans le cadre du 3ème projet de la licence professionnelle WIMSI de l'IUT de Reims.
 
+Nous avons utilisé un vps et un serveur sous nodejs développer par nous-même afin de mettre à disposition les ressources : 
+
+- Application : https://www.nokxs.com/
+- Api : https://www.nokxs.com/api/
+
 ## Choix technologiques
 Nous avons choisi de réaliser une Progressive Web Application pour ce projet. Nous avons fait ce choix pour répondre à la problématique du projet : notre application doit être disponible sur le web et sur mobile.
 
