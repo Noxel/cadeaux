@@ -143,7 +143,7 @@ class ContactsScreen extends Component {
                                             {this.state.item.link ? (
                                                 <MenuItem
                                                     onClick={() => {
-                                                        console.log(this.state.id);
+                                                        console.log(this.state.item.id);
                                                         this.setState({ wish: true });
                                                     }}
                                                 >
@@ -173,7 +173,7 @@ class ContactsScreen extends Component {
                 <FabButton fonct={modalAddContact} />
                 <ModalAddContact />
                 <ModalUpdateContact />
-                <ModalLinkContact />
+                <ModalLinkContact idLinkContact={this.state.item.id} />
                 <ModalContact />
                 <Dialog open={this.state.confDel} disableEnforceFocus>
                     <DialogTitle>{'Voulez-vous supprimer cet élément ? '}</DialogTitle>
